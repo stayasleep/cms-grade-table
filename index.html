@@ -12,18 +12,18 @@
     <div class="row">
         <!-- only show this element when the user isnt on mobile -->
         <h1 class="hidden-xs hidden-sm col-sm-10">Student Grade Table
-            <small class="pull-right">Grade Average : <span class="avgGrade label label-default">40</span></small>
+            <small class="pull-right">Grade Average : <span class="avgGrade label label-default"></span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
         <h3 class="hidden-lg hidden-md">Student Grade Table
-            <small>Grade Average : <span class="avgGrade well well-sm">40</span></small>
+            <small>Grade Average : <span class="avgGrade well well-sm"></span></small>
         </h3>
     </div>
     <hr>
     <div class="row">
     <div class="student-add-form col-sm-3 pull-right">
         <h4>Add Student</h4>
-        <form>
+        <form id="studentForm">
         <div class="input-group form-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
@@ -43,8 +43,9 @@
                    placeholder="Student Grade">
         </div>
         </form>
-        <button type="button" class="btn btn-success" onclick="">Add</button>
-        <button type="button" class="btn btn-default" onclick="">Cancel</button>
+        <button type="button" class="btn btn-success studentAdd" onclick="">Add</button>
+        <button type="button" class="btn btn-default cancel" onclick="">Cancel</button>
+        <button type="button" class="btn btn-default loadIt">Get Data From Server</button>
     </div>
     <div class="col-sm-9 pull-left student-list-container">
         <table class="table student-list">
@@ -57,10 +58,10 @@
             </tr>
             </thead>
             <tbody>
-                <td>Obi Wan Kenobi</td>
-                <td>Jedi Mastery</td>
-                <td>C+</td>
-                <td></td>
+                <!--<td id="sNames"></td>-->
+                <!--<td id="sCourses"></td>-->
+                <!--<td id="sGrades"></td>-->
+                <!--<td id="sDelete"></td>-->
             </tbody>
         </table>
     </div>
