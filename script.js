@@ -10,11 +10,17 @@ var studentArray=[];
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
-// var inputIds=[
-//     var studentName =$('#studentName').val(),
-//     var studentGrade= $('#studentGrade').val(),
-//     var studentCours e= $('#course').val()
-//     ]
+/**
+ * Listen for the document to load and reset the data to the initial state
+ */
+$(document).ready(initializeSGT);
+function initializeSGT(){
+    $('.studentAdd').click(addClicked);
+    $('.cancel').click(cancelClicked);
+    $('.loadIt').click(dataResponse);
+    $('.upbtn').click(updateStudentInfo);
+    reset();
+}
 var inputIds=['studentName','studentCourse','studentGrade'];
 /**
  * addClicked - Event Handler when user clicks the add button // function is executed when add button is clicked..it will call addStudent and UpdatetudentList will also call clearAddStudentFOrm
@@ -93,19 +99,25 @@ function updateStudentList(){
  */
 function addStudentToDom(studentObj){
     var newTableRow = $('<tr>');
-        var tempStudentName = studentObj.name;
-        var tempStudentCourse= studentObj.course;
-        var tempStudentGrade= studentObj.grade;
+    var tempStudentName = studentObj.name;
+    var tempStudentCourse= studentObj.course_name;
+    var tempStudentGrade= studentObj.grade;
     var newCol1 = $('<td>').html(tempStudentName);
     var newCol2 = $('<td>').html(tempStudentCourse);
     var newCol3 = $('<td>').html(tempStudentGrade);
+    var action = $('<td>');
     var delBtn = $('<button>',{
         class: "btn btn-danger",
         type: "button",
         text: "Delete"
     }).click(deleteClicked);
-    var newCol4 = $('<td>').html(delBtn);
-    newTableRow.append(newCol1,newCol2,newCol3,newCol4);
+    var editBtn = $('<button>',{
+        class:"btn btn-info",
+        type: "button",
+        text: "Update"
+    }).click(updateStudent);
+    //   var newCol4 = $('<td>').html(delBtn,editBtn);
+    newTableRow.append(newCol1,newCol2,newCol3,action.append(delBtn,editBtn));
     $('.student-list-container tbody').append(newTableRow);
 }
 function deleteClicked(){
@@ -123,77 +135,118 @@ function deleteClicked(){
  */
 function reset(){
     studentArray=[];
-    // inputIds = null;
-    // clearAddStudentForm();
-    // location.reload();
+    $('tr').remove();
 }
 
-/**
- * Listen for the document to load and reset the data to the initial state
- */
-$(document).ready(initializeSGT);
-function initializeSGT(){
-    $('.studentAdd').click(addClicked);
-    $('.cancel').click(cancelClicked);
-    $('.loadIt').click(dataResponse)
-    reset();
-}
-var global_response;
+var global_response=null;
 function dataResponse() {
-    var theData = {api_key: "QYMNIeNPIJ"};
+    reset();
     $.ajax({
-        data: theData,
         dataType: 'json',
-        url: 'http://s-apis.learningfuze.com/sgt/get',
-        method: 'POST',
-        success: function (response) {
+        url: '../prototypes_C2.17/php_SGTserver/data.php?action=readAll',
+        method: 'post',
+        success: function(response) {
+            console.log("success",response);
             global_response = response;
-            console.log(global_response.data);
-            for (var i=0; i<=global_response.data.length-1;i++){
-                studentArray.push(global_response.data[i]);
-                addStudentToDom(studentArray[i]);
+            for (var i=0; i< global_response['data'].length;i++){
+                studentArray.push(global_response['data'][i]);
+                addStudentToDom(global_response['data'][i]);
                 updateData();
-                //calculate the avg
-
             }
+        },
+        error: function(err){
+            console.warn('REKT ', err);
         }
     })
 }
 function sendStudent(obj){
-    var myData= {api_key: "QYMNIeNPIJ"};
-    myData.name = obj.name;
-    myData.grade = obj.grade;
-    myData.course = obj.course;
+    var dataObject={
+        'name': studentArray[studentArray.length-1]['name'],
+        'course_name': studentArray[studentArray.length-1]['course'],
+        'grade': studentArray[studentArray.length-1]['grade'],
+    };
     $.ajax({
-        data:myData,
+        data:dataObject,
         dataType: 'json',
-        url: 'http://s-apis.learningfuze.com/sgt/create',
+        url: '../prototypes_C2.17/php_SGTserver/data.php?action=insert',
         method: 'POST',
         success: function(response){
             if (response.success === true){
                 console.log(response);
-                obj.id = response.new_id;
-
+                //studentArray[studentArray.length-1][id]=response['data'][id];
             }
         }
     })
 }
 function removeStudent(id){
-    var myData = {api_key: "QYMNIeNPIJ"};
-    myData.id = id;
+    var myData ={
+        'id': id
+    };
     $.ajax({
         data: myData,
         dataType: 'json',
-        url: 'http://s-apis.learningfuze.com/sgt/delete',
+        url: '../prototypes_C2.17/php_SGTserver/data.php?action=delete',
         method: 'POST',
         success: function(response){
             if (response.success===true){
                 console.log(response+" removed");
             }
-
         },
         error: function(response){
-            console.log(response);
+            console.log('failed ', response);
         }
     })
 }
+function updateStudent() {
+    var studentIndex = $(this).parent().parent().index();
+    var studentID = studentArray[studentIndex]["id"];
+    modalDisplay(studentID);
+  //  $('#myModal').modal(updateStudentInfo(studentID));
+
+}
+function modalDisplay(s){
+    $('#myModal').modal($('#uID').val(s));
+}
+function updateStudentInfo() {
+    var uName = $('#upName').val();
+    var uGrade = $('#upGrade').val();
+    var uCourse = $('#upCourse').val();
+    var updateObject = {
+        id: $('#uID').val(),
+        student: uName,
+        score: uGrade,
+        course: uCourse
+        // name: document.getElementById('upName').value,
+        // grade: document.getElementById('upGrade').value,
+        // course: document.getElementById('upCourse').value
+    };
+    console.log('not ajax ',updateObject);
+    updateStudentDom(updateObject);
+    $("#myModal").modal({show: false});
+    // $('#upbtn').click(updateStudentDom(updateObject), function()
+    // {
+    //     $('#updateForm input').val("");
+    //     $('#myModal').css('display', "none");
+    // })
+};
+function updateStudentDom(d){
+    var dataObject={
+        'id': d['id'],
+        'student': d['student'],
+        'course': d['course'],
+        'score': d['score'],
+    };
+    console.log('ajax ', dataObject);
+    $.ajax({
+        data:dataObject,
+        dataType:'json',
+        url: '../prototypes_C2.17/php_SGTserver/data.php?action=update',
+        method: 'POST',
+        success: function(response){
+            console.log('updated');
+        },
+    });
+};
+//i can add ppl onto my page if the field is blank. i get a console log for backend error, which is proper...but it still gets onto my DB
+//can put preventative measures on the front end side
+//or maybe check backend again

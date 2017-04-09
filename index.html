@@ -21,50 +21,83 @@
     </div>
     <hr>
     <div class="row">
-    <div class="student-add-form col-sm-3 pull-right">
-        <h4>Add Student</h4>
-        <form id="studentForm">
-        <div class="input-group form-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
+        <div class="student-add-form col-sm-3 pull-right">
+            <h4>Add Student</h4>
+            <form id="studentForm">
+                <div class="input-group form-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
+                </div>
+                <div class="input-group form-group">
+                    <!--<span class="">-->
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                    <!--</span>-->
+                    <input type="text" class="form-control" name="course" id="course"
+                           placeholder="Student Course">
+                </div>
+                <div class="input-group form-group">
+                    <!--<span>-->
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
+                    <!--</span>-->
+                    <input type="number" min=0 max=100 class="form-control" name="studentGrade" id="studentGrade"
+                           placeholder="Student Grade">
+                </div>
+            </form>
+            <button type="button" class="btn btn-success studentAdd" onclick="">Add</button>
+            <button type="button" class="btn btn-default cancel" onclick="">Cancel</button>
+            <button type="button" class="btn btn-default loadIt">Get Data From Server</button>
         </div>
-        <div class="input-group form-group">
-            <!--<span class="">-->
-            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-            <!--</span>-->
-            <input type="text" class="form-control" name="course" id="course"
-                   placeholder="Student Course">
+        <div class="col-sm-9 pull-left student-list-container">
+            <table class="table student-list">
+                <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Student Course</th>
+                    <th>Student Grade</th>
+                    <th>Operations</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <h1>Update The Fields below:</h1>
+                        <div class="modal-body">
+                            <form id="updateForm">
+                                <div class="input-group form-group">
+                                    <input type="text" class="form-control" name="uID" id="uID" disabled>
+
+                                </div>
+                                <div class="input-group form-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                    <input type="text" class="form-control" name="upName" id="upName" placeholder="Student Name">
+                                </div>
+                                <div class="input-group form-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                                    <input type="text" class="form-control" name="upCourse" id="upCourse"
+                                           placeholder="Student Course">
+                                </div>
+                                <div class="input-group form-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
+                                    <input type="number" min=0 max=100 class="form-control" name="upGrade" id="upGrade"
+                                           placeholder="Student Grade">
+                                </div>
+                                <button type="button" class="btn btn-success upbtn">Update Student</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </form>
+                        <!--</div>-->
+                        <!--<div class="modal-footer">-->
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        <!--</div>-->
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div class="input-group form-group">
-            <!--<span>-->
-            <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-            <!--</span>-->
-            <input type="text" class="form-control" name="studentGrade" id="studentGrade"
-                   placeholder="Student Grade">
-        </div>
-        </form>
-        <button type="button" class="btn btn-success studentAdd" onclick="">Add</button>
-        <button type="button" class="btn btn-default cancel" onclick="">Cancel</button>
-        <button type="button" class="btn btn-default loadIt">Get Data From Server</button>
-    </div>
-    <div class="col-sm-9 pull-left student-list-container">
-        <table class="table student-list">
-            <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Student Course</th>
-                <th>Student Grade</th>
-                <th>Operations</th>
-            </tr>
-            </thead>
-            <tbody>
-                <!--<td id="sNames"></td>-->
-                <!--<td id="sCourses"></td>-->
-                <!--<td id="sGrades"></td>-->
-                <!--<td id="sDelete"></td>-->
-            </tbody>
-        </table>
-    </div>
     </div>
 </div>
 </body>
