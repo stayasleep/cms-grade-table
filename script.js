@@ -26,9 +26,53 @@ function initializeSGT(){
  * addClicked - Event Handler when user clicks the add button // function is executed when add button is clicked..it will call addStudent and UpdatetudentList will also call clearAddStudentFOrm
  */
 function addClicked(){
-    addStudent();
-    updateStudentList();
-    clearAddStudentForm();
+    var name=$('#studentName').val();
+    var grades = $('#studentGrade').val();
+    var courses = $('#course').val();
+    if(name==="" || grades==="" || courses===""){
+        generalModal("Please fill in all the required fields","Close");
+        $('#genModal').modal();
+        return false;
+    }else {
+        addStudent(name,grades,courses);
+        updateStudentList();
+        clearAddStudentForm();
+    }
+}
+function generalModal(str,str2){
+    var innerDiv = $('<div>',{
+        class:"modal-body"
+    });
+    var innerP=$('<p>',{
+        class:"modal-str",
+        text: str
+    });
+    innerDiv.append(innerP);
+    var innerDiv2=$('<div>',{
+        class:"modal-footer"
+    });
+    var innerBtnX=$('<button>',{
+        type:"button",
+        class:"btn btn-danger",
+        "data-dismiss":"modal",
+        text:str2
+    });
+    innerDiv2.append(innerBtnX);
+    var midDiv = $('<div>',{
+        class:"modal-content"
+    });
+    midDiv.append(innerDiv,innerDiv2);
+    var outterDiv2=$('<div>',{
+        class:"modal-dialog"
+    });
+    outterDiv2.append(midDiv);
+    var outterDiv=$('<div>',{
+        class:"modal fade",
+        id:"genModal",
+        role:"dialog"
+    });
+    // outterDiv.append(outterDiv2);
+    $('thead').append(outterDiv.append(outterDiv2));
 }
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form//calls clearAddStudentForm eh
@@ -42,21 +86,16 @@ function cancelClicked(){
  * @return undefined
  */
 function addStudent(name,grades,courses){
-    name=$('#studentName').val();
-    grades = $('#studentGrade').val();
-    courses = $('#course').val();
-    var newObject ={
+    var newObject = {
         name: name,
         grade: grades,
-        course: courses
-
+        course: courses,
     };
     studentArray.push(newObject);
     sendStudent(newObject);
     updateData();
-
     return undefined;
-}
+};
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
@@ -83,7 +122,6 @@ function calculateAverage(){
 function updateData(){
     var result = calculateAverage();
     $('.avgGrade').html(result);
-    // updateStudentList();
 }
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
@@ -100,7 +138,7 @@ function updateStudentList(){
 function addStudentToDom(studentObj){
     var newTableRow = $('<tr>');
     var tempStudentName = studentObj.name;
-    var tempStudentCourse= studentObj.course_name;
+    var tempStudentCourse= studentObj.course_name || studentObj.course;
     var tempStudentGrade= studentObj.grade;
     var newCol1 = $('<td>').html(tempStudentName);
     var newCol2 = $('<td>').html(tempStudentCourse);
@@ -126,7 +164,6 @@ function deleteClicked(){
     $(this).parent().parent().remove();
     studentArray.splice(studentIndex, 1);
     // $(this).parent('tr').remove();
-
     updateData();
     removeStudent(studentID)
 }
