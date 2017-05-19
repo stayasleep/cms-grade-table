@@ -14,6 +14,7 @@ var studentArray=[];
  * Listen for the document to load and reset the data to the initial state
  */
 $(document).ready(initializeSGT);
+
 function initializeSGT(){
     $('.studentAdd').click(addClicked);
     $('.cancel').click(cancelClicked);
@@ -21,7 +22,6 @@ function initializeSGT(){
     $('.upbtn').click(updateStudentInfo);
     reset();
 }
-var inputIds=['studentName','studentCourse','studentGrade'];
 /**
  * addClicked - Event Handler when user clicks the add button // function is executed when add button is clicked..it will call addStudent and UpdatetudentList will also call clearAddStudentFOrm
  */
@@ -64,7 +64,6 @@ function clearAddStudentForm(){
     $('#studentName').val("");
     $('#studentGrade').val("");
     $('#course').val("");
-    // $('#studentForm').reset();
 }
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
@@ -75,7 +74,8 @@ function calculateAverage(){
     for (var i=0;i<=studentArray.length-1;i++){
         number += parseFloat(studentArray[i].grade);
     }
-    return parseFloat(number/studentArray.length).toFixed(2);
+    console.log(typeof number);
+    return (number/studentArray.length).toFixed(2)+'%';
 }
 /**
  * updateData - centralized function to update the average and call student list update // prob wanna call updateAvg
@@ -118,7 +118,7 @@ function addStudentToDom(studentObj){
     }).click(updateStudent);
     //   var newCol4 = $('<td>').html(delBtn,editBtn);
     newTableRow.append(newCol1,newCol2,newCol3,action.append(delBtn,editBtn));
-    $('.student-list-container tbody').append(newTableRow);
+    $('tbody').append(newTableRow);
 }
 function deleteClicked(){
     var studentIndex = $(this).parent().parent().index();
@@ -135,7 +135,7 @@ function deleteClicked(){
  */
 function reset(){
     studentArray=[];
-    $('tr').remove();
+    // $('tr>td').remove();
 }
 
 var global_response=null;
@@ -175,6 +175,9 @@ function sendStudent(obj){
                 console.log(response);
                 //studentArray[studentArray.length-1][id]=response['data'][id];
             }
+        },
+        error: function(response){
+            console.log('err',response);
         }
     })
 }
@@ -201,8 +204,6 @@ function updateStudent() {
     var studentIndex = $(this).parent().parent().index();
     var studentID = studentArray[studentIndex]["id"];
     modalDisplay(studentID);
-  //  $('#myModal').modal(updateStudentInfo(studentID));
-
 }
 function modalDisplay(s){
     $('#myModal').modal($('#uID').val(s));
@@ -216,18 +217,11 @@ function updateStudentInfo() {
         student: uName,
         score: uGrade,
         course: uCourse
-        // name: document.getElementById('upName').value,
-        // grade: document.getElementById('upGrade').value,
-        // course: document.getElementById('upCourse').value
     };
     console.log('not ajax ',updateObject);
     updateStudentDom(updateObject);
-    $("#myModal").modal({show: false});
-    // $('#upbtn').click(updateStudentDom(updateObject), function()
-    // {
-    //     $('#updateForm input').val("");
-    //     $('#myModal').css('display', "none");
-    // })
+    $('#updateForm input').val('');
+    $("#myModal").modal('hide');
 };
 function updateStudentDom(d){
     var dataObject={
@@ -247,6 +241,3 @@ function updateStudentDom(d){
         },
     });
 };
-//i can add ppl onto my page if the field is blank. i get a console log for backend error, which is proper...but it still gets onto my DB
-//can put preventative measures on the front end side
-//or maybe check backend again

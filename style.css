@@ -1,0 +1,33 @@
+.btn-danger{
+    margin-right: 1em;
+}
+.btn{
+    width: 10vh;
+}
+.table>tbody>tr>td{
+    vertical-align: middle;
+}
+
+
+/*media query*/
+@media screen and (max-width: 623px){
+    .btn-danger{
+        margin-bottom: 1em;
+    }
+}
+@media screen and (max-width: 430px){
+    .btn-danger{
+        margin-bottom: 1em;
+    }
+    .btn-success{
+        width: 15vh;
+    }
+    .btn-default{
+        width:15vh;
+    }
+}
+@media screen and (max-width: 320px){
+    .table>tbody>tr>td{
+        padding:0;
+    }
+}

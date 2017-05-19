@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
@@ -21,7 +22,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="student-add-form col-sm-3 pull-right">
+        <div class="student-add-form col-lg-3 pull-right">
             <h4>Add Student</h4>
             <form id="studentForm">
                 <div class="input-group form-group">
@@ -43,21 +44,24 @@
                            placeholder="Student Grade">
                 </div>
             </form>
+            <div class="btnControl">
             <button type="button" class="btn btn-success studentAdd" onclick="">Add</button>
             <button type="button" class="btn btn-default cancel" onclick="">Cancel</button>
-            <button type="button" class="btn btn-default loadIt">Get Data From Server</button>
+            <button type="button" class="btn btn-default loadIt">Sync</button>
+            </div>
         </div>
-        <div class="col-sm-9 pull-left student-list-container">
+        <div class="col-lg-9 pull-left student-list-container">
             <table class="table student-list">
                 <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Student Course</th>
-                    <th>Student Grade</th>
-                    <th>Operations</th>
-                </tr>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Student Course</th>
+                        <th>Student Grade</th>
+                        <th>Operations</th>
+                    </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                </tbody>
             </table>
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
@@ -86,10 +90,10 @@
                                     <input type="number" min=0 max=100 class="form-control" name="upGrade" id="upGrade"
                                            placeholder="Student Grade">
                                 </div>
-                                <button type="button" class="btn btn-success upbtn">Update Student</button>
+                                <button type="button" class="btn btn-success upbtn">Update</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </form>
-                        <!--</div>-->
+                        </div>
                         <!--<div class="modal-footer">-->
                             <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
                         <!--</div>-->
