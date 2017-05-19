@@ -20,6 +20,7 @@ function initializeSGT(){
     $('.cancel').click(cancelClicked);
     $('.loadIt').click(dataResponse);
     $('.upbtn').click(updateStudentInfo);
+    // $('.confirmOp').click(deleteRow);
     reset();
 }
 /**
@@ -39,7 +40,7 @@ function addClicked(){
         clearAddStudentForm();
     }
 }
-function generalModal(str,str2){
+function generalModal(str,str2,str3){
     var innerDiv = $('<div>',{
         class:"modal-body"
     });
@@ -57,7 +58,16 @@ function generalModal(str,str2){
         "data-dismiss":"modal",
         text:str2
     });
-    innerDiv2.append(innerBtnX);
+    if(str3 !== ""){
+        var innerBtnX2 = $('<button>',{
+            type:"button",
+            class:"btn btn-success confirmOp",
+            text: str3
+        });
+        innerDiv2.append(innerBtnX2,innerBtnX);
+    }else {
+        innerDiv2.append(innerBtnX);
+    }
     var midDiv = $('<div>',{
         class:"modal-content"
     });
@@ -161,12 +171,26 @@ function addStudentToDom(studentObj){
 function deleteClicked(){
     var studentIndex = $(this).parent().parent().index();
     var studentID = studentArray[studentIndex]["id"];
-    $(this).parent().parent().remove();
-    studentArray.splice(studentIndex, 1);
-    // $(this).parent('tr').remove();
-    updateData();
-    removeStudent(studentID)
+    var delRow = $(this);
+    generalModal("Please confirm entry before deleting","Cancel","Confirm");
+    $('#genModal').modal();
+    $('.confirmOp').click(function(){
+        delRow.parent().parent().remove();
+        // $(this).parent().parent().remove();
+        studentArray.splice(studentIndex, 1);
+        // $(this).parent('tr').remove();
+        updateData();
+        removeStudent(studentID);
+        $("#genModal").modal('hide');
+    });
 }
+// function deleteRow(){
+//     delRow.parent().parent().remove();
+//     studentArray.splice(studentIndex,1);
+//     updateData();
+//     removeStudent(studentID);
+//     $('#genModal').modal('hide');
+// }
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
