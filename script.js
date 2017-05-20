@@ -20,7 +20,6 @@ function initializeSGT(){
     $('.cancel').click(cancelClicked);
     $('.loadIt').click(dataResponse);
     $('.upbtn').click(updateStudentInfo);
-    // $('.confirmOp').click(deleteRow);
     reset();
 }
 /**
@@ -31,10 +30,12 @@ function addClicked(){
     var grades = $('#studentGrade').val();
     var courses = $('#course').val();
     if(name==="" || grades==="" || courses===""){
+        $('#genModal').remove();
         generalModal("Please fill in all the required fields","Close");
-        $('#genModal').modal();
+        $('#genModal').modal("show");
         return false;
     }else {
+        $('#genModal').remove();
         addStudent(name,grades,courses);
         updateStudentList();
         clearAddStudentForm();
@@ -62,6 +63,7 @@ function generalModal(str,str2,str3){
         var innerBtnX2 = $('<button>',{
             type:"button",
             class:"btn btn-success confirmOp",
+            "data-dismiss":"modal",
             text: str3
         });
         innerDiv2.append(innerBtnX2,innerBtnX);
@@ -169,6 +171,7 @@ function addStudentToDom(studentObj){
     $('tbody').append(newTableRow);
 }
 function deleteClicked(){
+    $('#genModal').remove();
     var studentIndex = $(this).parent().parent().index();
     var studentID = studentArray[studentIndex]["id"];
     var delRow = $(this);
@@ -176,21 +179,12 @@ function deleteClicked(){
     $('#genModal').modal();
     $('.confirmOp').click(function(){
         delRow.parent().parent().remove();
-        // $(this).parent().parent().remove();
-        studentArray.splice(studentIndex, 1);
-        // $(this).parent('tr').remove();
+        studentArray.splice(studentIndex,1);
         updateData();
         removeStudent(studentID);
-        $("#genModal").modal('hide');
+        // $("#genModal").modal('hide');
     });
 }
-// function deleteRow(){
-//     delRow.parent().parent().remove();
-//     studentArray.splice(studentIndex,1);
-//     updateData();
-//     removeStudent(studentID);
-//     $('#genModal').modal('hide');
-// }
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
