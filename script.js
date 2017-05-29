@@ -1,7 +1,4 @@
 /**
- * Define all global variables here
- */
-/**
  * student_array - global array to hold student objects
  * @type {Array}
  */
@@ -20,6 +17,18 @@ function initializeSGT(){
     $('.cancel').click(cancelClicked);
     $('.loadIt').click(dataResponse);
     $('.upbtn').click(updateStudentInfo);
+    $('.modC').keypress(submitWithKeys);
+    // $("#genModal").on('shown.bs.modal',function(){
+    //     console.log('modal opened');
+    //     $(this).focus();
+    // });
+    // $("#studentGrade").keydown(function(event){
+    //     var keys=[48,49,50,51,52,53,54,55,56,57];
+    //     if(keys.indexOf(event.which)===-1){
+    //         console.log('no wrong key');
+    //     }
+    //     console.log('right key')
+    // });
     reset();
 }
 /**
@@ -30,9 +39,10 @@ function addClicked(){
     var grades = $('#studentGrade').val();
     var courses = $('#course').val();
     if(name==="" || grades==="" || courses===""){
-        $('#genModal').remove();
-        generalModal("Please fill in all the required fields","Close");
-        $('#genModal').modal("show");
+        // $('#genModal').show("hide");
+        $("#genModal").remove();
+        generalModal("Please fill in all the required fields","Close","");
+        $('#genModal').modal({keyboard:true});
         return false;
     }else {
         $('#genModal').remove();
@@ -55,23 +65,23 @@ function generalModal(str,str2,str3){
     });
     var innerBtnX=$('<button>',{
         type:"button",
-        class:"btn btn-danger",
+        class:"btn btn-danger closer",
         "data-dismiss":"modal",
-        text:str2
+        html:"<span>"+str2+"</span>",
     });
     if(str3 !== ""){
         var innerBtnX2 = $('<button>',{
             type:"button",
             class:"btn btn-success confirmOp",
             "data-dismiss":"modal",
-            text: str3
+            html:"<span>"+str3+"</span>",
         });
         innerDiv2.append(innerBtnX2,innerBtnX);
     }else {
         innerDiv2.append(innerBtnX);
     }
     var midDiv = $('<div>',{
-        class:"modal-content"
+        class:"modal-content modC"
     });
     midDiv.append(innerDiv,innerDiv2);
     var outterDiv2=$('<div>',{
@@ -85,6 +95,10 @@ function generalModal(str,str2,str3){
     });
     // outterDiv.append(outterDiv2);
     $('thead').append(outterDiv.append(outterDiv2));
+    $("#genModal").on('shown.bs.modal',function(){
+        console.log('modal opened');
+        $('.closer').focus();
+    });
 }
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form//calls clearAddStudentForm eh
@@ -121,12 +135,25 @@ function clearAddStudentForm(){
  * @returns {number} /////////all the Joes need to be sought and matched and then averaged
  */
 function calculateAverage(){
-    var number = 0;
+    var numbers = 0;
     for (var i=0;i<=studentArray.length-1;i++){
-        number += parseFloat(studentArray[i].grade);
+        numbers += parseFloat(studentArray[i].grade);
+    }
+    var number = (numbers/studentArray.length).toFixed(2);
+    if(number>=90.00){
+        $(".avgGrade").css("background-color","green");
+    }else if (number>=80.00){
+        $(".avgGrade").css("background-color","mediumseagreen");
+    }else if(number>=70.00){
+        $(".avgGrade").css("background-color","orange");
+    }else if(number>=60.00){
+        $(".avgGrade").css("background-color","lightcoral");
+    }else{
+        $(".avgGrade").css("background-color","red");
     }
     console.log(typeof number);
-    return (number/studentArray.length).toFixed(2)+'%';
+    // return (number/studentArray.length).toFixed(2)+'%';
+    return number+'%';
 }
 /**
  * updateData - centralized function to update the average and call student list update // prob wanna call updateAvg
@@ -157,14 +184,16 @@ function addStudentToDom(studentObj){
     var newCol3 = $('<td>').html(tempStudentGrade);
     var action = $('<td>');
     var delBtn = $('<button>',{
-        class: "btn btn-danger",
+        class: "btn btn-danger optionX",
         type: "button",
-        text: "Delete"
+        // text: "Delete"
+        html:"<span>Delete</span>"
     }).click(deleteClicked);
     var editBtn = $('<button>',{
         class:"btn btn-info",
         type: "button",
-        text: "Update"
+        // text: "Update"
+        html:"<span>Update</span>"
     }).click(updateStudent);
     //   var newCol4 = $('<td>').html(delBtn,editBtn);
     newTableRow.append(newCol1,newCol2,newCol3,action.append(delBtn,editBtn));
@@ -296,3 +325,14 @@ function updateStudentDom(d){
         },
     });
 };
+
+function submitWithKeys(){
+    console.log('close modal called');
+    // if($("#genModal").hasClass('in')===true){
+    //     console.log('has class in');
+        if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
+            $("#genModal").remove();
+        }
+
+}
+
