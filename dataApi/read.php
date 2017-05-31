@@ -24,4 +24,5 @@ if(empty($result)){
         $output['errors']=['no data'];
     }
 }
+mysqli_close($conn);
 ?>

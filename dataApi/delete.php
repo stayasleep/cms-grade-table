@@ -6,6 +6,9 @@ if(empty($id)) {
     $output['errors'][] = "Missing ID";
 }else {
     //write a query that deletes the student by the given student ID
+    //escape id first
+    $id=mysqli_real_escape_string($conn,$id);
+
     $query = "DELETE FROM  `student_data` WHERE `id`='$id'";
     $result = mysqli_query($conn, $query);
     //send the query to the database, store the result of the query into $result
@@ -21,4 +24,5 @@ if(empty($id)) {
         }
     }
 }
+mysqli_close($conn);
 ?>

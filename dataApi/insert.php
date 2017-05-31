@@ -13,6 +13,11 @@ if(empty($grade)){
 if(empty($course_name)){
     $output['errors'][]='Missing Course Name';
 }
+//escape vars if theyre not empty
+$name = mysqli_real_escape_string($conn, $name);
+$grade = mysqli_real_escape_string($conn, $grade);
+$course_name = mysqli_real_escape_string($conn, $course_name);
+
 //write a query that inserts the data into the database.  remember that ID doesn't need to be set as it is auto incrementing
 $query = "INSERT INTO `student_data`(`id`, `name`, `grade`, `course_name`) VALUES (null,'$name','$grade','$course_name')";
 //send the query to the database, store the result of the query into $result
@@ -30,4 +35,5 @@ if(empty($result)) {
         $output['errors'][]='insert error';
     }
 }
+mysqli_close($conn);
 ?>

@@ -35,4 +35,5 @@ if(empty($id)){
         }
     }
 }
+mysqli_close($conn);
 ?>
