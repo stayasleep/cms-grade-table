@@ -179,9 +179,9 @@ function addStudentToDom(studentObj){
     var tempStudentName = studentObj.name;
     var tempStudentCourse= studentObj.course_name || studentObj.course;
     var tempStudentGrade= studentObj.grade;
-    var newCol1 = $('<td>').html(tempStudentName);
-    var newCol2 = $('<td>').html(tempStudentCourse);
-    var newCol3 = $('<td>').html(tempStudentGrade);
+    var newCol1 = $('<td>').text(tempStudentName);
+    var newCol2 = $('<td>').text(tempStudentCourse);
+    var newCol3 = $('<td>').text(tempStudentGrade);
     var action = $('<td>');
     var delBtn = $('<button>',{
         class: "btn btn-danger optionX",
@@ -227,7 +227,7 @@ function dataResponse() {
     reset();
     $.ajax({
         dataType: 'json',
-        url: '../prototypes_C2.17/php_SGTserver/data.php?action=readAll',
+        url: 'data.php?action=readAll',
         method: 'post',
         success: function(response) {
             console.log("success",response);
@@ -252,7 +252,7 @@ function sendStudent(obj){
     $.ajax({
         data:dataObject,
         dataType: 'json',
-        url: '../prototypes_C2.17/php_SGTserver/data.php?action=insert',
+        url: 'data.php?action=insert',
         method: 'POST',
         success: function(response){
             if (response.success === true){
@@ -272,7 +272,7 @@ function removeStudent(id){
     $.ajax({
         data: myData,
         dataType: 'json',
-        url: '../prototypes_C2.17/php_SGTserver/data.php?action=delete',
+        url: 'data.php?action=delete',
         method: 'POST',
         success: function(response){
             if (response.success===true){
@@ -318,7 +318,7 @@ function updateStudentDom(d){
     $.ajax({
         data:dataObject,
         dataType:'json',
-        url: '../prototypes_C2.17/php_SGTserver/data.php?action=update',
+        url: 'data.php?action=update',
         method: 'POST',
         success: function(response){
             console.log('updated');
