@@ -1,4 +1,9 @@
 <?php
+/*check connection*/
+if (mysqli_connect_errno()){
+    printf("Connect failed: %s\n",mysqli_connect_error());
+    exit();
+}
 //check if you have all the data you need from the client-side call.  This should include the fields being changed and the ID of the student to be changed
 $id=$_POST['id'];
 $updateFields = [

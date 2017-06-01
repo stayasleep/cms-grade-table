@@ -1,4 +1,9 @@
 <?php
+/*check connection*/
+if (mysqli_connect_errno()){
+    printf("Connect failed: %s\n",mysqli_connect_error());
+    exit();
+}
 //check if you have all the data you need from the client-side call.
 $name=$_POST['name'];
 $grade=$_POST['grade'];

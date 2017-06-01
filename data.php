@@ -7,7 +7,7 @@ if(empty($action)){
 	exit('no action specified');
 }
 //require the mysql_connect.php file.  Make sure your properly configured it!
-require('mysql_connect.php');
+require('./mysql_connect.php');
 
 $output = [
 	'success'=> false, //we assume we will fail
