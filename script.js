@@ -4,10 +4,6 @@
  */
 var studentArray=[];
 /**
- * inputIds - id's of the elements that are used to add students
- * @type {string[]}
- */
-/**
  * Listen for the document to load and reset the data to the initial state
  */
 $(document).ready(initializeSGT);
@@ -18,18 +14,62 @@ function initializeSGT(){
     $('.loadIt').click(dataResponse);
     $('.upbtn').click(updateStudentInfo);
     $('.modC').keypress(submitWithKeys);
-    // $("#genModal").on('shown.bs.modal',function(){
-    //     console.log('modal opened');
-    //     $(this).focus();
-    // });
-    // $("#studentGrade").keydown(function(event){
-    //     var keys=[48,49,50,51,52,53,54,55,56,57];
-    //     if(keys.indexOf(event.which)===-1){
-    //         console.log('no wrong key');
-    //     }
-    //     console.log('right key')
-    // });
+    $('#studentName').blur(function(){
+        validation('.sError');
+    });
+    $('#upName').blur(function(){
+        validation('.uNError');
+    });
+    $('#course').blur(function(){
+        validation2('.cError');
+    });
+    $('#upCourse').blur(function(){
+        validation2('.uCError');
+    })
+    $('#studentGrade').blur(function(){
+        validation3('.gError');
+    });
+    $('#upGrade').blur(function(){
+        validation3('.uGError');
+    });
     reset();
+}
+function validation(paramClass){
+    var nameVal = $('#studentName').val() || $('#upName').val();
+    if(nameVal && /(^\s+)([^a-zA-Z]+)/g.test(nameVal)){
+        var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please Enter a First and Last Name</div>';
+        $(paramClass).html(output);
+    }else{
+        if(nameVal && !/^[A-z ]{3,40}/g.test(nameVal)){
+            var output = '<div class="alert alert-danger">Names must contain at least 3 characters.</div>';
+            $(paramClass).html(output);
+        }else{
+            $(paramClass).html("");
+        }
+    }
+}
+function validation2(paramClass){
+    var courseVal = $('#course').val() || $('#upCourse').val();
+    if(courseVal  && /(^\s+)([^a-zA-Z]+)/g.test(courseVal)){
+        var output = '<div class="alert alert-danger">Please Enter a Course Name</div>';
+        $(paramClass).html(output);
+    }else{
+        if(courseVal && !/[A-z0-9 ]{2,40}/g.test(courseVal)){
+            var output = '<div class="alert alert-danger">Course Name Must Be Between 2 And 40 Characters</div>';
+            $(paramClass).html(output);
+        }else{
+            $(paramClass).html("");
+        }
+    }
+}
+function validation3(paramClass){
+    var gradeVal = $('#studentGrade').val() || $('#upGrade').val();
+    if(gradeVal && !/^0*(?:[0-9][0-9]?|100)$/g.test(gradeVal)){
+        var output = '<div class="alert alert-danger">Please Enter a Whole Number Between 0-100</div>';
+        $(paramClass).html(output);
+    }else{
+        $(paramClass).html("");
+    }
 }
 /**
  * addClicked - Event Handler when user clicks the add button // function is executed when add button is clicked..it will call addStudent and UpdatetudentList will also call clearAddStudentFOrm
@@ -45,10 +85,21 @@ function addClicked(){
         $('#genModal').modal({keyboard:true});
         return false;
     }else {
-        $('#genModal').remove();
-        addStudent(name,grades,courses);
-        updateStudentList();
-        clearAddStudentForm();
+        if($('.sError').html()==="" && $('.cError').html()==="" && $('.gError').html()===""){
+            $('#genModal').remove();
+            addStudent(name,grades,courses);
+            updateStudentList();
+            clearAddStudentForm();
+        }else{
+            $('#genModal').remove();
+            generalModal("Please Fill In The Fields In The Proper Format","Close","");
+            $('#genModal').modal({keyboard:true});
+            return false;
+        }
+        // $('#genModal').remove();
+        // addStudent(name,grades,courses);
+        // updateStudentList();
+        // clearAddStudentForm();
     }
 }
 function generalModal(str,str2,str3){
@@ -105,6 +156,7 @@ function generalModal(str,str2,str3){
  */
 function cancelClicked(){
     clearAddStudentForm();
+    $('.sError, .cError, .gError').html("");
 }
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -184,13 +236,13 @@ function addStudentToDom(studentObj){
     var newCol3 = $('<td>').text(tempStudentGrade);
     var action = $('<td>');
     var delBtn = $('<button>',{
-        class: "btn btn-danger optionX",
+        class: "btn btn-danger btnOps",
         type: "button",
         // text: "Delete"
         html:"<span>Delete</span>"
     }).click(deleteClicked);
     var editBtn = $('<button>',{
-        class:"btn btn-info",
+        class:"btn btn-info btnOps",
         type: "button",
         // text: "Update"
         html:"<span>Update</span>"
@@ -219,7 +271,7 @@ function deleteClicked(){
  */
 function reset(){
     studentArray=[];
-    // $('tr>td').remove();
+    $('tbody>tr').remove();
 }
 
 var global_response=null;
@@ -333,5 +385,4 @@ function submitWithKeys(){
         if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
             $("#genModal").remove();
         }
-
 }

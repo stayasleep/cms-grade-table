@@ -29,20 +29,17 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                     <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
                 </div>
+                <div class="sError"></div>
                 <div class="input-group form-group">
-                    <!--<span class="">-->
                     <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                    <!--</span>-->
-                    <input type="text" class="form-control" name="course" id="course"
-                           placeholder="Student Course">
+                    <input type="text" class="form-control" name="course" id="course" placeholder="Student Course">
                 </div>
+                <div class="cError"></div>
                 <div class="input-group form-group">
-                    <!--<span>-->
                     <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-                    <!--</span>-->
-                    <input type="number" min=0 max=100 class="form-control" name="studentGrade" id="studentGrade"
-                           placeholder="Student Grade">
+                    <input type="number" min=0 max=100 class="form-control" name="studentGrade" id="studentGrade" placeholder="Student Grade">
                 </div>
+                <div class="gError"></div>
             </form>
             <div class="btnControl">
                 <button type="button" class="btn btn-success studentAdd mod"><span>Add</span></button>
@@ -71,28 +68,28 @@
                     <div class="modal-content">
                         <h1>Update The Fields below:</h1>
                         <div class="modal-body">
-                            <form id="updateForm">
+                            <form id="updateForm" name="updateEntry">
                                 <div class="input-group form-group">
                                     <input type="text" class="form-control" name="uID" id="uID" disabled>
-
                                 </div>
                                 <div class="input-group form-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                     <input type="text" class="form-control" name="upName" id="upName" placeholder="Student Name">
                                 </div>
+                                <div class="uNError"></div>
                                 <div class="input-group form-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                                    <input type="text" class="form-control" name="upCourse" id="upCourse"
-                                           placeholder="Student Course">
+                                    <input type="text" class="form-control" name="upCourse" id="upCourse" placeholder="Student Course">
                                 </div>
+                                <div class="uCError"></div>
                                 <div class="input-group form-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-                                    <input type="number" min=0 max=100 class="form-control" name="upGrade" id="upGrade"
-                                           placeholder="Student Grade">
+                                    <input type="number" min=0 max=100 class="form-control" name="upGrade" id="upGrade" placeholder="Student Grade">
                                 </div>
+                                <div class="uGError"></div>
                                 <div class="updateBtnCont">
-                                <button type="button" class="btn btn-success upbtn"><span>Update</span></button>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal"><span>Close</span></button>
+                                    <button type="button" class="btn btn-success upbtn"><span>Update</span></button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span>Close</span></button>
                                 </div>
                             </form>
                         </div>

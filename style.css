@@ -13,6 +13,9 @@ h1,h3{
     width: 10vh;
     outline: none !important;
 }
+.btnOps{
+    margin: 5%;
+}
 .table>tbody>tr>td{
     vertical-align: middle;
 }
