@@ -36,13 +36,21 @@ function initializeSGT(){
 }
 function validation(paramClass){
     var nameVal = $('#studentName').val() || $('#upName').val();
+    //check whitespace
     if(nameVal && /(^\s+)([^a-zA-Z]+)/g.test(nameVal)){
         var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please Enter a First and Last Name</div>';
         $(paramClass).html(output);
     }else{
-        if(nameVal && !/^[A-z ]{3,40}/g.test(nameVal)){
-            var output = '<div class="alert alert-danger">Names must contain at least 3 characters.</div>';
-            $(paramClass).html(output);
+        if(nameVal && !/^[A-z0-9 ]{3,30}$/g.test(nameVal)){
+            if(nameVal.length<=2) {
+                //so name is too short
+                var output = '<div class="alert alert-danger">Names must contain at least 3 characters.</div>';
+                $(paramClass).html(output);
+            }else{
+                //so name is too long
+                var output = '<div class="alert alert-danger">Names must under the 30 character limit.</div>';
+                $(paramClass).html(output);
+            }
         }else{
             $(paramClass).html("");
         }
@@ -54,9 +62,16 @@ function validation2(paramClass){
         var output = '<div class="alert alert-danger">Please Enter a Course Name</div>';
         $(paramClass).html(output);
     }else{
-        if(courseVal && !/[A-z0-9 ]{2,40}/g.test(courseVal)){
-            var output = '<div class="alert alert-danger">Course Name Must Be Between 2 And 40 Characters</div>';
-            $(paramClass).html(output);
+        if(courseVal && !/^[A-z0-9 ]{2,40}$/g.test(courseVal)){
+            if(courseVal.length<=2) {
+                //too short class name
+                var output = '<div class="alert alert-danger">Course Name Must Be At Least 2 Characters</div>';
+                $(paramClass).html(output);
+            }else{
+                //name is too long
+                var output = '<div class="alert alert-danger">Course Name Must Be Shorter Than 40 Characters</div>';
+                $(paramClass).html(output);
+            }
         }else{
             $(paramClass).html("");
         }
