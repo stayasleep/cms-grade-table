@@ -144,7 +144,6 @@ function generalModal(str,str2,str3){
         id:"genModal",
         role:"dialog"
     });
-    // outterDiv.append(outterDiv2);
     $('thead').append(outterDiv.append(outterDiv2));
     $("#genModal").on('shown.bs.modal',function(){
         console.log('modal opened');
@@ -184,10 +183,13 @@ function clearAddStudentForm(){
 }
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
- * @returns {number} /////////all the Joes need to be sought and matched and then averaged
+ * @returns {number}
  */
 function calculateAverage(){
     var numbers = 0;
+    if(!studentArray.length){
+        return 0+"%";
+    }
     for (var i=0;i<=studentArray.length-1;i++){
         numbers += parseFloat(studentArray[i].grade);
     }
@@ -274,7 +276,6 @@ function reset(){
     $('tbody>tr').remove();
 }
 
-var global_response=null;
 function dataResponse() {
     reset();
     $.ajax({
@@ -283,15 +284,20 @@ function dataResponse() {
         method: 'post',
         success: function(response) {
             console.log("success",response);
-            global_response = response;
-            for (var i=0; i< global_response['data'].length;i++){
-                studentArray.push(global_response['data'][i]);
-                addStudentToDom(global_response['data'][i]);
-                updateData();
+            if(response.success) {
+                for (var i = 0; i < response['data'].length; i++) {
+                    studentArray.push(response['data'][i]);
+                    addStudentToDom(response['data'][i]);
+                    updateData();
+                }
+            }else{
+                generalModal("There are no entries in your database yet; please fill out the form to add entries.","Close","");
+                $('#genModal').modal({keyboard:true});
             }
         },
-        error: function(err){
-            console.warn('REKT ', err);
+        error: function(response){
+            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            $('#genModal').modal({keyboard:true});
         }
     })
 }
@@ -310,10 +316,14 @@ function sendStudent(obj){
             if (response.success === true){
                 console.log(response);
                 //studentArray[studentArray.length-1][id]=response['data'][id];
+            }else{
+
             }
         },
         error: function(response){
             console.log('err',response);
+            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            $('#genModal').modal({keyboard:true});
         }
     })
 }
@@ -333,6 +343,8 @@ function removeStudent(id){
         },
         error: function(response){
             console.log('failed ', response);
+            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            $('#genModal').modal({keyboard:true});
         }
     })
 }
@@ -375,6 +387,10 @@ function updateStudentDom(d){
         success: function(response){
             console.log('updated');
         },
+        error:function(response){
+            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            $('#genModal').modal({keyboard:true});
+        }
     });
 };
 
