@@ -16,11 +16,11 @@
 <div class="container-fluid">
     <div class="row">
         <!-- only show this element when the user isnt on mobile -->
-        <h1 class="hidden-xs">Mr. Stein&apos;s Student Grading Table
+        <h1 class="hidden-xs">Professor Stein&apos;s Student Grading Table
             <small class="pull-right">Grade Average : <span class="avgGrade label label-default"></span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
-        <h3 class="hidden-lg hidden-md hidden-sm"> Mr. Stein&apos;s Student Grading Table
+        <h3 class="hidden-lg hidden-md hidden-sm">Professor Stein&apos;s Student Grading Table
             <small>Grade Average : <span class="avgGrade label label-default"></span></small>
         </h3>
     </div>
@@ -48,7 +48,7 @@
             <div class="btnControl">
                 <button type="button" class="btn btn-success studentAdd mod"><span>Add</span></button>
                 <button type="button" class="btn btn-warning cancel"><span>Cancel</span></button>
-                <button type="button" class="btn btn-default loadIt"><span>Sync</span></button>
+                <!--<button type="button" class="btn btn-default loadIt"><span>Sync</span></button>-->
             </div>
             <div class="serverResp"></div>
         </div>
@@ -92,6 +92,7 @@
                                     <input type="number" min=0 max=100 class="form-control" name="upGrade" id="upGrade" placeholder="Student Grade">
                                 </div>
                                 <div class="uGError"></div>
+                                <div class="uSubmitError"></div>
                                 <div class="updateBtnCont">
                                     <button type="button" class="btn btn-success upbtn"><span>Update</span></button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"><span>Close</span></button>

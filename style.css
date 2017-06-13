@@ -10,6 +10,9 @@ h1,h3{
     color:white;
     font-weight: 700;
 }
+.serverResp{
+    margin-top: 20px;
+}
 .btn{
     width: 10vh;
     outline: none !important;
@@ -44,6 +47,7 @@ button>span{
 .modal{
     top: 25%;
 }
+
 /*media query*/
 @media screen and (min-width: 767px){
     .optionX{
@@ -53,24 +57,3 @@ button>span{
         width: 5em;
     }
 }
-/*@media screen and (max-width: 623px){*/
-    /*.optionX{*/
-        /*margin-bottom: 1em;*/
-    /*}*/
-/*}*/
-/*@media screen and (max-width: 430px){*/
-    /*.btn-danger{*/
-        /*margin-bottom: 1em;*/
-    /*}*/
-    /*.btn-success{*/
-        /*width: 15vh;*/
-    /*}*/
-    /*.btn-default{*/
-        /*width:15vh;*/
-    /*}*/
-/*}*/
-/*@media screen and (max-width: 320px){*/
-    /*.table>tbody>tr>td{*/
-        /*padding:0;*/
-    /*}*/
-/*}*/

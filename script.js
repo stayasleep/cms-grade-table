@@ -11,7 +11,7 @@ $(document).ready(initializeSGT);
 function initializeSGT(){
     $('.studentAdd').click(addClicked);
     $('.cancel').click(cancelClicked);
-    $('.loadIt').click(dataResponse);
+    dataResponse();
     $('.upbtn').click(updateStudentInfo);
     $('.modC').keypress(submitWithKeys);
     $('#studentName').blur(function(){
@@ -32,23 +32,29 @@ function initializeSGT(){
     $('#upGrade').blur(function(){
         validation3('.uGError');
     });
+    $('input').focus(function(){
+        $('.serverResp').html("");
+    });
+    $('#myModal').on('hidden.bs.modal',function(){
+        $('.uSubmitError, .uGError, .uCError, .uNError').html("");
+    });
     reset();
 }
 function validation(paramClass){
     var nameVal = $('#studentName').val() || $('#upName').val();
     //check whitespace
     if(nameVal && /(^\s+)([^a-zA-Z]+)/g.test(nameVal)){
-        var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please Enter a First and Last Name</div>';
+        var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please Remove Any Blank Spaces Before Entering A Name</div>';
         $(paramClass).html(output);
     }else{
         if(nameVal && !/^[A-z0-9 ]{3,30}$/g.test(nameVal)){
             if(nameVal.length<=2) {
                 //so name is too short
-                var output = '<div class="alert alert-danger">Names must contain at least 3 characters.</div>';
+                var output = '<div class="alert alert-danger">Names must contain at least 3 letters.</div>';
                 $(paramClass).html(output);
             }else{
                 //so name is too long
-                var output = '<div class="alert alert-danger">Names must under the 30 character limit.</div>';
+                var output = '<div class="alert alert-danger">Names must be under 30 character.</div>';
                 $(paramClass).html(output);
             }
         }else{
@@ -151,15 +157,19 @@ function generalModal(str,str2,str3){
     });
     outterDiv2.append(midDiv);
     var outterDiv=$('<div>',{
-        class:"modal fade in",
+        class:"modal fade ",
         id:"genModal",
-        role:"dialog"
+        role:"dialog",
+        tabindex:-1
     });
     $('thead').append(outterDiv.append(outterDiv2));
     $("#genModal").on('shown.bs.modal',function(){
         console.log('modal opened');
         $('.closer').focus();
     });
+    $('#genModal').on('hidden.bs.modal',function(){
+        $('#genModal').remove();
+    })
 }
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form//calls clearAddStudentForm eh
@@ -167,6 +177,7 @@ function generalModal(str,str2,str3){
 function cancelClicked(){
     clearAddStudentForm();
     $('.sError, .cError, .gError').html("");
+    $('.serverResp').html("");
 }
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -229,7 +240,7 @@ function updateData(){
 }
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
- */ //this one calls addStudent, it cycles thru the list for new student, calls addStudent2Dom, adds to Dom...studentLsit knows how many students need to be added eh
+ */
 function updateStudentList(){
     var obj = studentArray[studentArray.length-1];
     addStudentToDom(obj);
@@ -251,16 +262,13 @@ function addStudentToDom(studentObj){
     var delBtn = $('<button>',{
         class: "btn btn-danger btnOps",
         type: "button",
-        // text: "Delete"
         html:"<span>Delete</span>"
     }).click(deleteClicked);
     var editBtn = $('<button>',{
         class:"btn btn-info btnOps",
         type: "button",
-        // text: "Update"
         html:"<span>Update</span>"
     }).click(updateStudent);
-    //   var newCol4 = $('<td>').html(delBtn,editBtn);
     newTableRow.append(newCol1,newCol2,newCol3,action.append(delBtn,editBtn));
     $('tbody').append(newTableRow);
 }
@@ -384,24 +392,35 @@ function removeStudent(obj){
     $('.serverResp').html(output);
 }
 function updateStudent() {
+    $('.sError, .gError, .cError').html("");
+    $('#studentName, #course, #studentGrade').val("");
     var studentIndex = $(this).parent().parent().index();
-    var studentID = studentArray[studentIndex]["id"];
-    modalDisplay(studentID);
+    //var studentID = studentArray[studentIndex]["id"];
+    var studentUpdate = studentArray[studentIndex];
+    //modalDisplay(studentID);
+    modalDisplay(studentUpdate);
 }
 function modalDisplay(s){
-    $('#myModal').modal($('#uID').val(s));
+    $('#upName').val(s.name);
+    $('#upGrade').val(s.grade);
+    $('#upCourse').val(s.course_name);
+    $('#myModal').modal($('#uID').val(s.id));
 }
 function updateStudentInfo() {
     var uName = $('#upName').val();
     var uGrade = $('#upGrade').val();
     var uCourse = $('#upCourse').val();
+    if(uName === "" || uGrade === "" || uCourse === ""){
+        var output = "<div class='alert alert-danger'>Please Fill In All The Required Fields.</div>";
+        $('.uSubmitError').html(output);
+        return false;
+    }
     var updateObject = {
         id: $('#uID').val(),
         student: uName,
         score: uGrade,
         course: uCourse
     };
-    console.log('not ajax ',updateObject);
     updateStudentDom(updateObject);
     $('#updateForm input').val('');
     $("#myModal").modal('hide');
@@ -420,16 +439,19 @@ function updateStudentDom(d){
         url: 'data.php?action=update',
         method: 'POST',
         success: function(response){
+            console.log('i have internet',response);
             $('.serverResp').html("");
             if (response.success){
                 var output = "<div class='alert alert-success'> Your record has successfully updated.</div>";
                 $('.serverResp').html(output);
+                dataResponse();
             }else{
                 generalModal("Unable to update the  entry from your records; please fill in the fields in the proper format.","Close","");
                 $('#genModal').modal({keyboard:true});
             }
         },
         error:function(response){
+            console.log('sociial security', response);
             $('.serverResp').html("");
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
