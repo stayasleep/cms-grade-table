@@ -25,7 +25,7 @@ function initializeSGT(){
     });
     $('#upCourse').blur(function(){
         validation2('.uCError');
-    })
+    });
     $('#studentGrade').blur(function(){
         validation3('.gError');
     });
@@ -111,10 +111,6 @@ function addClicked(){
             $('#genModal').modal({keyboard:true});
             return false;
         }
-        // $('#genModal').remove();
-        // addStudent(name,grades,courses);
-        // updateStudentList();
-        // clearAddStudentForm();
     }
 }
 function generalModal(str,str2,str3){
@@ -155,7 +151,7 @@ function generalModal(str,str2,str3){
     });
     outterDiv2.append(midDiv);
     var outterDiv=$('<div>',{
-        class:"modal fade",
+        class:"modal fade in",
         id:"genModal",
         role:"dialog"
     });
@@ -425,10 +421,16 @@ function updateStudentDom(d){
         method: 'POST',
         success: function(response){
             $('.serverResp').html("");
-            
-            console.log('updated');
+            if (response.success){
+                var output = "<div class='alert alert-success'> Your record has successfully updated.</div>";
+                $('.serverResp').html(output);
+            }else{
+                generalModal("Unable to update the  entry from your records; please fill in the fields in the proper format.","Close","");
+                $('#genModal').modal({keyboard:true});
+            }
         },
         error:function(response){
+            $('.serverResp').html("");
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
         }
@@ -439,8 +441,6 @@ function updateStudentDom(d){
 
 function submitWithKeys(){
     console.log('close modal called');
-    // if($("#genModal").hasClass('in')===true){
-    //     console.log('has class in');
         if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
             $("#genModal").remove();
         }

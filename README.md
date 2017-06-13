@@ -1,18 +1,28 @@
 # SGT - Student Grade Table
 
 
-#### Description
-Version 0.5 starts off with adding in the delete functionality. When clicking on the delete button we need
-to add an event handler that will remove the current row from the DOM only after we have successfully removed the object
-from the array.
+#### Summary
+A user-friendly record management system with full CRUD functionality.  Easily create, read, \
+update, and delete records at the click of a button!  Each action performs a request to the database \
+with feedback every step of the way.  User input is validated both client-side and server-side \
+with extra precaution on the server-side of things to protect against malicious database attacks \
+and cross site scripting commands.
+
+## Features
+- CRUD Functionality:
+    - Create new records
+    - Read all records and sync information with the database
+    - Update existing records when information changes
+    - Delete records as needed
+- Client-side form validation
+- Server-side data sanitization
 
 
-## Version 1.0
-#### Description
-Version 1.0 picks up where 0.5 left off. You will now be populating records from a database.
-
-
-## Version 2.0
-#### Description
-Version 2.0 adds more CRUD functionality.  Previously you added R (Read), and now you will be adding Create and Delete functionality. You will now be adding records to a database via the SGT API you create.
+## Technologies
+- PHP
+- MySQL
+- JavaScript
+- jQuery/Ajax
+- HTML
+- Bootstrap
 
