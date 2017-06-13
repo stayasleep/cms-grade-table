@@ -164,7 +164,6 @@ function generalModal(str,str2,str3){
     });
     $('thead').append(outterDiv.append(outterDiv2));
     $("#genModal").on('shown.bs.modal',function(){
-        console.log('modal opened');
         $('.closer').focus();
     });
     $('#genModal').on('hidden.bs.modal',function(){
@@ -227,8 +226,6 @@ function calculateAverage(){
     }else{
         $(".avgGrade").css("background-color","red");
     }
-    console.log(typeof number);
-    // return (number/studentArray.length).toFixed(2)+'%';
     return number+'%';
 }
 /**
@@ -305,7 +302,6 @@ function dataResponse() {
         url: 'data.php?action=readAll',
         method: 'post',
         success: function(response) {
-            console.log("success",response);
             if(response.success) {
                 $('.serverResp').html("");
                 for (var i = 0; i < response['data'].length; i++) {
@@ -342,7 +338,6 @@ function sendStudent(obj){
         success: function(response){
             $('.serverResp').html("");
             if (response.success === true){
-                console.log(response);
                 var output = "<div class='alert alert-success'> Successfully Added "+dataObject.name+" to your records.</div>";
                 $('.serverResp').html(output);
                 //studentArray[studentArray.length-1][id]=response['data'][id];
@@ -353,7 +348,6 @@ function sendStudent(obj){
         },
         error: function(response){
             $('.serverResp').html("");
-            console.log('err',response);
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
         }
@@ -373,7 +367,6 @@ function removeStudent(obj){
         success: function(response){
             $('.serverResp').html("");
             if (response.success===true){
-                console.log(response+" removed");
                 var output = "<div class='alert alert-success'> Deleted "+obj.deletedName+" from your records.</div>";
                 $('.serverResp').html(output);
             }else{
@@ -383,7 +376,6 @@ function removeStudent(obj){
         },
         error: function(response){
             $('.serverResp').html("");
-            console.log('failed ', response);
             generalModal("There is a problem with the connection, cannot remove the entry.  Please try again later.","Close","");
             $('#genModal').modal({keyboard:true});
         }
@@ -432,14 +424,12 @@ function updateStudentDom(d){
         'course': d['course'],
         'score': d['score'],
     };
-    console.log('ajax ', dataObject);
     $.ajax({
         data:dataObject,
         dataType:'json',
         url: 'data.php?action=update',
         method: 'POST',
         success: function(response){
-            console.log('i have internet',response);
             $('.serverResp').html("");
             if (response.success){
                 var output = "<div class='alert alert-success'> Your record has successfully updated.</div>";
@@ -451,7 +441,6 @@ function updateStudentDom(d){
             }
         },
         error:function(response){
-            console.log('sociial security', response);
             $('.serverResp').html("");
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
@@ -462,7 +451,6 @@ function updateStudentDom(d){
 };
 
 function submitWithKeys(){
-    console.log('close modal called');
         if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
             $("#genModal").remove();
         }
