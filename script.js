@@ -272,6 +272,8 @@ function deleteClicked(){
     $('#genModal').remove();
     var studentIndex = $(this).parent().parent().index();
     var studentID = studentArray[studentIndex]["id"];
+    var deletedName = studentArray[studentIndex]["name"];
+    var deletedStudent={"id":studentID,"deletedName":deletedName};
     var delRow = $(this);
     generalModal("Please confirm entry before deleting","Cancel","Confirm");
     $('#genModal').modal();
@@ -279,7 +281,7 @@ function deleteClicked(){
         delRow.parent().parent().remove();
         studentArray.splice(studentIndex,1);
         updateData();
-        removeStudent(studentID);
+        removeStudent(deletedStudent);
         // $("#genModal").modal('hide');
     });
 }
@@ -287,6 +289,7 @@ function deleteClicked(){
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
 function reset(){
+    $('.serverResp').html("");
     studentArray=[];
     $('tbody>tr').remove();
 }
@@ -300,21 +303,26 @@ function dataResponse() {
         success: function(response) {
             console.log("success",response);
             if(response.success) {
+                $('.serverResp').html("");
                 for (var i = 0; i < response['data'].length; i++) {
                     studentArray.push(response['data'][i]);
                     addStudentToDom(response['data'][i]);
                     updateData();
                 }
             }else{
+                $('.serverResp').html("");
                 generalModal("There are no entries in your database yet; please fill out the form to add entries.","Close","");
                 $('#genModal').modal({keyboard:true});
             }
         },
         error: function(response){
+            $('.serverResp').html("");
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
         }
-    })
+    });
+    var output = '<div class="alert alert-info">Retrieving student entries...</div>';
+    $('.serverResp').html(output);
 }
 function sendStudent(obj){
     var dataObject={
@@ -328,23 +336,30 @@ function sendStudent(obj){
         url: 'data.php?action=insert',
         method: 'POST',
         success: function(response){
+            $('.serverResp').html("");
             if (response.success === true){
                 console.log(response);
+                var output = "<div class='alert alert-success'> Successfully Added "+dataObject.name+" to your records.</div>";
+                $('.serverResp').html(output);
                 //studentArray[studentArray.length-1][id]=response['data'][id];
             }else{
-
+                generalModal("Unable to insert entry into your records; please fill out the form in the proper format and try again.","Close","");
+                $('#genModal').modal({keyboard:true});
             }
         },
         error: function(response){
+            $('.serverResp').html("");
             console.log('err',response);
             generalModal("There is a problem with the connection.  Please try again later","Close","");
             $('#genModal').modal({keyboard:true});
         }
-    })
+    });
+    var output = "<div class='alert alert-info'> Adding"+dataObject.name+" to your records...</div>";
+    $('.serverResp').html(output);
 }
-function removeStudent(id){
+function removeStudent(obj){
     var myData ={
-        'id': id
+        'id': obj.id
     };
     $.ajax({
         data: myData,
@@ -352,16 +367,25 @@ function removeStudent(id){
         url: 'data.php?action=delete',
         method: 'POST',
         success: function(response){
+            $('.serverResp').html("");
             if (response.success===true){
                 console.log(response+" removed");
+                var output = "<div class='alert alert-success'> Deleted "+obj.deletedName+" from your records.</div>";
+                $('.serverResp').html(output);
+            }else{
+                generalModal("Unable to delete the  entry from your records; please try again.","Close","");
+                $('#genModal').modal({keyboard:true});
             }
         },
         error: function(response){
+            $('.serverResp').html("");
             console.log('failed ', response);
-            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            generalModal("There is a problem with the connection, cannot remove the entry.  Please try again later.","Close","");
             $('#genModal').modal({keyboard:true});
         }
-    })
+    });
+    var output = "<div class='alert alert-info'> Deleting "+obj.deletedName+" from your records...</div>";
+    $('.serverResp').html(output);
 }
 function updateStudent() {
     var studentIndex = $(this).parent().parent().index();
@@ -400,6 +424,8 @@ function updateStudentDom(d){
         url: 'data.php?action=update',
         method: 'POST',
         success: function(response){
+            $('.serverResp').html("");
+            
             console.log('updated');
         },
         error:function(response){
@@ -407,6 +433,8 @@ function updateStudentDom(d){
             $('#genModal').modal({keyboard:true});
         }
     });
+    var output = "<div class='alert alert-info'> Updating your record...</div>";
+    $('.serverResp').html(output);
 };
 
 function submitWithKeys(){
