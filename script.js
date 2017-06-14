@@ -68,7 +68,7 @@ function validation2(paramClass){
         var output = '<div class="alert alert-danger">Please Enter a Course Name</div>';
         $(paramClass).html(output);
     }else{
-        if(courseVal && !/^[A-z0-9 ]{2,40}$/g.test(courseVal)){
+        if(courseVal && !/^([a-zA-Z0-9 :\-.'"]+){2,40}$/g.test(courseVal)){
             if(courseVal.length<=2) {
                 //too short class name
                 var output = '<div class="alert alert-danger">Course Name Must Be At Least 2 Characters</div>';
