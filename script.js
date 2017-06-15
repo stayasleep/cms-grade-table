@@ -85,8 +85,8 @@ function validation2(paramClass){
 }
 function validation3(paramClass){
     var gradeVal = $('#studentGrade').val() || $('#upGrade').val();
-    if(gradeVal && !/^0*(?:[0-9][0-9]?|100)$/g.test(gradeVal)){
-        var output = '<div class="alert alert-danger">Please Enter a Whole Number Between 0-100</div>';
+    if(gradeVal && !/^0*(?:[1-9][0-9]?|100)$/g.test(gradeVal)){
+        var output = '<div class="alert alert-danger">Please Enter a Whole Number Between 1-100</div>';
         $(paramClass).html(output);
     }else{
         $(paramClass).html("");
