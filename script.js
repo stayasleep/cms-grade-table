@@ -105,18 +105,18 @@ function addClicked(){
     var courses = $('#course').val();
     if(name==="" || grades==="" || courses===""){
         // $('#genModal').show("hide");
-        $("#genModal").remove();
+        //$("#genModal").remove();
         generalModal("Please fill in all the required fields","Close","");
         $('#genModal').modal({keyboard:true});
         return false;
     }else {
         if($('.sError').html()==="" && $('.cError').html()==="" && $('.gError').html()===""){
-            $('#genModal').remove();
+            //$('#genModal').remove();
             addStudent(name,grades,courses);
             updateStudentList();
             clearAddStudentForm();
         }else{
-            $('#genModal').remove();
+            //$('#genModal').remove();
             generalModal("Please Fill In The Fields In The Proper Format","Close","");
             $('#genModal').modal({keyboard:true});
             return false;
@@ -344,6 +344,7 @@ function sendStudent(obj){
             if (response.success === true){
                 var output = "<div class='alert alert-success'> Successfully Added "+dataObject.name+" to your records.</div>";
                 $('.serverResp').html(output);
+                dataResponse();
                 //studentArray[studentArray.length-1][id]=response['data'][id];
             }else{
                 generalModal("Unable to insert entry into your records; please fill out the form in the proper format and try again.","Close","");
