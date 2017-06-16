@@ -23,8 +23,10 @@ if(empty($course_name)){
 $name = filter_var($name, FILTER_SANITIZE_STRING,  FILTER_FLAG_STRIP_HIGH);
 $min = 0;
 $max = 100;
+$grade = ltrim($grade, '0');
+
 if (filter_var($grade, FILTER_VALIDATE_INT, array("options" => array("min_range"=>$min, "max_range"=>$max))) === false) {
-    $output['errors'][]="Variable value is not within the legal range 0 - 100";
+    $output['errors'][]="Variable value is not within the legal range 1 - 100";
 }
 $course_name =  filter_var($course_name, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 

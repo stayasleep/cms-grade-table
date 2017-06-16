@@ -89,6 +89,10 @@ function validation3(paramClass){
         var output = '<div class="alert alert-danger">Please Enter a Whole Number Between 1-100</div>';
         $(paramClass).html(output);
     }else{
+        if(gradeVal <= 1){
+            var output = '<div class="alert a;ert-danger">Grade Must Be Greater Than 0</div>';
+            $(paramClass).html(output);
+        }
         $(paramClass).html("");
     }
 }

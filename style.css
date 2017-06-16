@@ -23,6 +23,10 @@ h1,h3{
 .table>tbody>tr>td{
     vertical-align: middle;
 }
+tbody > tr{
+    word-break: break-all;
+    font-size: 1em;
+}
 .loadIt{
     background-color: darkslategray;
     opacity: .7;
