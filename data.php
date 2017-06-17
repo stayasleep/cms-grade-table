@@ -31,6 +31,10 @@ switch($action){
 		//include the update.php file
         include('./dataApi/update.php');
 		break;
+    case 'filter':
+        //include the filter.php file
+        include('./dataApi/filter.php');
+        break;
 }
 //convert the $output variable to json, store the result in $outputJSON
 $outputJSON=json_encode($output);

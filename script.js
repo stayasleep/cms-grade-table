@@ -38,6 +38,7 @@ function initializeSGT(){
     $('#myModal').on('hidden.bs.modal',function(){
         $('.uSubmitError, .uGError, .uCError, .uNError').html("");
     });
+    $('#filterName').on('keyup',filterByName);
     reset();
 }
 function validation(paramClass){
@@ -459,4 +460,38 @@ function submitWithKeys(){
         if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
             $("#genModal").remove();
         }
+}
+//A filter?
+//take the value being typed into it and start doing ajax calls when you type
+function filterByName(){
+    reset();
+    var filteredName = $('#filterName').val();
+    $.ajax({
+        data: {"name":filteredName},
+        dataType:"json",
+        url: 'data.php?action=filter',
+        method: "POST",
+        success:function(response){
+            console.log('this is my response',response);
+            if(response.success){
+                $('.serverResp').html("");
+                for (var j=0;j<response.data.length;j++){
+                    studentArray.push(response.data[j]);
+                    addStudentToDom(response.data[j]);
+                    updateData();
+                }
+            }else{
+                $('.serverResp').html("");
+                var output = "<div class='alert alert-danger'>There are no names that match</div>";
+                $('.serverResp').html(output);
+            }
+        },
+        error: function(response){
+            $('.serverResp').html("");
+            generalModal("There is a problem with the connection.  Please try again later","Close","");
+            $('#genModal').modal({keyboard:true});
+        }
+    });
+    var output = "<div class='alert alert-info'> Filtering...</div>";
+    $('.serverResp').html(output);
 }
