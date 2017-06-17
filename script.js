@@ -288,7 +288,11 @@ function deleteClicked(){
         studentArray.splice(studentIndex,1);
         updateData();
         removeStudent(deletedStudent);
+        if(studentArray.length === 0){
+            $('#filterName').attr("disabled","disabled");
+        }
         // $("#genModal").modal('hide');
+
     });
 }
 /**
@@ -309,6 +313,7 @@ function dataResponse() {
         success: function(response) {
             if(response.success) {
                 $('.serverResp').html("");
+                $('#filterName').removeAttr("disabled");
                 for (var i = 0; i < response['data'].length; i++) {
                     studentArray.push(response['data'][i]);
                     addStudentToDom(response['data'][i]);
@@ -316,6 +321,7 @@ function dataResponse() {
                 }
             }else{
                 $('.serverResp').html("");
+                $('#filterName').attr("disabled","disabled");
                 generalModal("There are no entries in your database yet; please fill out the form to add entries.","Close","");
                 $('#genModal').modal({keyboard:true});
             }
@@ -480,6 +486,9 @@ function filterByName(){
                     addStudentToDom(response.data[j]);
                     updateData();
                 }
+            }else if(response.errors[0] === "Missing Name"){
+                //Field is empty after backspacing
+                dataResponse();
             }else{
                 $('.serverResp').html("");
                 var output = "<div class='alert alert-danger'>There are no names that match</div>";
