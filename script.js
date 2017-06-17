@@ -45,7 +45,7 @@ function validation(paramClass){
     var nameVal = $('#studentName').val() || $('#upName').val();
     //check whitespace
     if(nameVal && /(^\s+)([^a-zA-Z]+)/g.test(nameVal)){
-        var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please Remove Any Blank Spaces Before Entering A Name</div>';
+        var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please remove any blank spaces before entering a name.</div>';
         $(paramClass).html(output);
     }else{
         if(nameVal && !/^[A-z0-9 ]{3,30}$/g.test(nameVal)){
@@ -55,7 +55,7 @@ function validation(paramClass){
                 $(paramClass).html(output);
             }else{
                 //so name is too long
-                var output = '<div class="alert alert-danger">Names must be under 30 character.</div>';
+                var output = '<div class="alert alert-danger">Names must be under 30 character and no special characters.</div>';
                 $(paramClass).html(output);
             }
         }else{
@@ -491,7 +491,11 @@ function filterByName(){
                 dataResponse();
             }else{
                 $('.serverResp').html("");
-                var output = "<div class='alert alert-danger'>There are no names that match</div>";
+                var filterBy=$('#filterName').val();
+                filterBy = filterBy.replace(/<|>/ig,function(m){
+                    return '&'+(m=='>'?'g':'l')+'t;';
+                });
+                var output = "<div class='alert alert-danger'>We&apos;re sorry, there are 0 matches for "+filterBy+". </div>";
                 $('.serverResp').html(output);
             }
         },

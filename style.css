@@ -1,6 +1,7 @@
 body{
     background-color: #f0f0f0;
     font-family: 'Mate SC', serif, Arial;
+    text-align: center;
 }
 h1,h3{
     margin-left: 15px;
@@ -22,6 +23,7 @@ h1,h3{
 }
 .table>tbody>tr>td{
     vertical-align: middle;
+    outline: 1px solid black
 }
 tbody > tr{
     word-break: break-all;
@@ -42,7 +44,7 @@ button>span{
     justify-content: center;
 }
 .table>thead>tr>th{
-    vertical-align: top !important;
+    text-align: center;
 }
 .updateBtnCont{
     display: flex;
@@ -59,5 +61,10 @@ button>span{
     }
     .btn{
         width: 5em;
+    }
+}
+@media screen and (max-width: 480px) {
+    .table>thead>tr>th{
+        vertical-align: top !important;
     }
 }
