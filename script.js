@@ -470,41 +470,43 @@ function submitWithKeys(){
 //A filter?
 //take the value being typed into it and start doing ajax calls when you type
 function filterByName(){
-    reset();
-    var filteredName = $('#filterName').val();
-    $.ajax({
-        data: {"name":filteredName},
-        dataType:"json",
-        url: 'data.php?action=filter',
-        method: "POST",
-        success:function(response){
-            console.log('this is my response',response);
-            if(response.success){
-                $('.serverResp').html("");
-                for (var j=0;j<response.data.length;j++){
-                    studentArray.push(response.data[j]);
-                    addStudentToDom(response.data[j]);
-                    updateData();
+    setTimeout(function() {
+        reset();
+        var filteredName = $('#filterName').val();
+        $.ajax({
+            data: {"name": filteredName},
+            dataType: "json",
+            url: 'data.php?action=filter',
+            method: "POST",
+            success: function (response) {
+                console.log('this is my response', response);
+                if (response.success) {
+                    $('.serverResp').html("");
+                    for (var j = 0; j < response.data.length; j++) {
+                        studentArray.push(response.data[j]);
+                        addStudentToDom(response.data[j]);
+                        updateData();
+                    }
+                } else if (response.errors[0] === "Missing Name") {
+                    //Field is empty after backspacing
+                    dataResponse();
+                } else {
+                    $('.serverResp').html("");
+                    var filterBy = $('#filterName').val();
+                    filterBy = filterBy.replace(/<|>/ig, function (m) {
+                        return '&' + (m == '>' ? 'g' : 'l') + 't;';
+                    });
+                    var output = "<div class='alert alert-danger'>We&apos;re sorry, there are 0 matches for " + filterBy + ". </div>";
+                    $('.serverResp').html(output);
                 }
-            }else if(response.errors[0] === "Missing Name"){
-                //Field is empty after backspacing
-                dataResponse();
-            }else{
+            },
+            error: function (response) {
                 $('.serverResp').html("");
-                var filterBy=$('#filterName').val();
-                filterBy = filterBy.replace(/<|>/ig,function(m){
-                    return '&'+(m=='>'?'g':'l')+'t;';
-                });
-                var output = "<div class='alert alert-danger'>We&apos;re sorry, there are 0 matches for "+filterBy+". </div>";
-                $('.serverResp').html(output);
+                generalModal("There is a problem with the connection.  Please try again later", "Close", "");
+                $('#genModal').modal({keyboard: true});
             }
-        },
-        error: function(response){
-            $('.serverResp').html("");
-            generalModal("There is a problem with the connection.  Please try again later","Close","");
-            $('#genModal').modal({keyboard:true});
-        }
-    });
-    var output = "<div class='alert alert-info'> Filtering...</div>";
-    $('.serverResp').html(output);
+        });
+        var output = "<div class='alert alert-info'> Filtering...</div>";
+        $('.serverResp').html(output);
+    },1000);
 }
