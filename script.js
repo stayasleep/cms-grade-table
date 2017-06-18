@@ -479,7 +479,7 @@ function filterByName(){
             url: 'data.php?action=filter',
             method: "POST",
             success: function (response) {
-                console.log('this is my response', response);
+                // console.log('this is my response', response);
                 if (response.success) {
                     $('.serverResp').html("");
                     for (var j = 0; j < response.data.length; j++) {
