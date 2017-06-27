@@ -1,0 +1,63 @@
+body{
+    background-color: #f0f0f0;
+    font-family: 'Mate SC', serif, Arial;
+}
+h1,h3{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.avgGrade{
+    color:white;
+    font-weight: 700;
+}
+.serverResp{
+    margin-top: 20px;
+}
+.btn{
+    width: 10vh;
+    outline: none !important;
+}
+.btnOps{
+    margin: 5%;
+}
+.table>tbody>tr>td{
+    vertical-align: middle;
+}
+tbody > tr{
+    word-break: break-all;
+    font-size: 1em;
+}
+.loadIt{
+    background-color: darkslategray;
+    opacity: .7;
+    color:white;
+}
+.loadIt:hover,.loadIt:active,.loadIt:focus{
+    background-color: darkslategray;
+    opacity: 1;
+    color: white;
+}
+button>span{
+    display: flex;
+    justify-content: center;
+}
+.table>thead>tr>th{
+    vertical-align: top !important;
+}
+.updateBtnCont{
+    display: flex;
+    justify-content: space-around;
+}
+.modal{
+    top: 25%;
+}
+
+/*media query*/
+@media screen and (min-width: 767px){
+    .optionX{
+        margin-right: 1em;
+    }
+    .btn{
+        width: 5em;
+    }
+}
