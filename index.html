@@ -26,7 +26,12 @@
     </div>
     <hr>
     <div class="row">
-        <div class="student-add-form col-lg-3 pull-right">
+        <div class="student-add-form well col-sm-3 pull-right">
+            <h4> Filter Results By Name</h4>
+            <div class="input-group form-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                <input type="text" class="form-control" name="filterName" id="filterName" placeholder="Filter By Name">
+            </div>
             <h4>Add Student</h4>
             <form id="studentForm" name="addEntry">
                 <div class="input-group form-group">
@@ -51,7 +56,7 @@
             </div>
             <div class="serverResp"></div>
         </div>
-        <div class="col-sm-12 col-lg-9 pull-left student-list-container">
+        <div class="col-xs-12 col-sm-9 pull-left student-list-container">
             <table class="table student-list">
                 <thead>
                     <tr>
