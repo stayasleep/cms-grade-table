@@ -84,6 +84,8 @@ function validation2(paramClass){
         }
     }
 }
+/**
+ * */
 function validation3(paramClass){
     var gradeVal = $('#studentGrade').val() || $('#upGrade').val();
     if(gradeVal && !/^0*(?:[1-9][0-9]?|100)$/g.test(gradeVal)){
@@ -98,7 +100,9 @@ function validation3(paramClass){
     }
 }
 /**
- * addClicked - Event Handler when user clicks the add button // function is executed when add button is clicked..it will call addStudent and UpdatetudentList will also call clearAddStudentFOrm
+ * @name - addClicked
+ * @description - Event Handler when user clicks the add button. It will call @addStudent and @updateStudentList and also @clearAddStudentForm
+ * if there are no error divs present in the body.
  */
 function addClicked(){
     var name=$('#studentName').val();
@@ -124,6 +128,12 @@ function addClicked(){
         }
     }
 }
+/**
+ * @name - generalModal
+ * @description - dynamically creates a general use modal that will be used to convery confirmations or notices to the user depending
+ * on the performed action.
+ * @params - str, str2, str3
+ * */
 function generalModal(str,str2,str3){
     var innerDiv = $('<div>',{
         class:"modal-body"
@@ -176,7 +186,8 @@ function generalModal(str,str2,str3){
     })
 }
 /**
- * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form//calls clearAddStudentForm eh
+ * @name - cancelClicked
+ * @description - Event Handler when user clicks the cancel button, should clear out student form//calls clearAddStudentForm.
  */
 function cancelClicked(){
     clearAddStudentForm();
@@ -184,8 +195,8 @@ function cancelClicked(){
     $('.serverResp').html("");
 }
 /**
- * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
- *
+ * @name - addStudent
+ * @description - creates a student objects based on input fields in the form and adds the object to global student array.
  * @return undefined
  */
 function addStudent(name,grades,courses){
@@ -208,7 +219,8 @@ function clearAddStudentForm(){
     $('#course').val("");
 }
 /**
- * calculateAverage - loop through the global student array and calculate average grade and return that value
+ * @name - calculateAverage
+ * @description - loop through the global student array and calculate average grade and return that value.
  * @returns {number}
  */
 function calculateAverage(){
@@ -234,21 +246,24 @@ function calculateAverage(){
     return number+'%';
 }
 /**
- * updateData - centralized function to update the average and call student list update // prob wanna call updateAvg
+ * @name - updateData
+ * @description - centralized function to update the average and call student list update // call calculateAverage.
  */
 function updateData(){
     var result = calculateAverage();
     $('.avgGrade').html(result);
 }
 /**
- * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
+ * @name - updateStudentList
+ * @description - loops through global student array and appends each objects data into the student-list-container > list-body.
  */
 function updateStudentList(){
     var obj = studentArray[studentArray.length-1];
     addStudentToDom(obj);
 }
 /**
- * addStudentToDom - take in a student object, create html elements from the values and then append the elements
+ * @name - addStudentToDom
+ * @description - take in a student object, create html elements from the values and then append the elements.
  * into the .student_list tbody
  * @param studentObj
  */
@@ -274,6 +289,12 @@ function addStudentToDom(studentObj){
     newTableRow.append(newCol1,newCol2,newCol3,action.append(delBtn,editBtn));
     $('tbody').append(newTableRow);
 }
+/**
+ * @name - deleteClicked
+ * @description - Locate the index for the record that was clicked on.  Then, use the index value
+ * as the position in the studentArray to find the object's id value.  Bring up confirmation modal
+ * before sending the id to the @removeStudent ajax call.
+ * */
 function deleteClicked(){
     $('#genModal').remove();
     var studentIndex = $(this).parent().parent().index();
@@ -291,12 +312,11 @@ function deleteClicked(){
         if(studentArray.length === 0){
             $('#filterName').attr("disabled","disabled");
         }
-        // $("#genModal").modal('hide');
-
     });
 }
 /**
- * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
+ * @name - reset
+ * @description - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
 function reset(){
     $('.serverResp').html("");
@@ -304,6 +324,12 @@ function reset(){
     $('tbody>tr').remove();
 }
 
+/**
+ * @name - dataResponse
+ * @description - Ajax call that returns the rows from the database and appends the results onto
+ * the screen by sending it off to the next function, @addStudentToDom.  Displays error
+ * messages if there are no entries to return or the connection is broken.
+ * */
 function dataResponse() {
     reset();
     $.ajax({
@@ -335,6 +361,12 @@ function dataResponse() {
     var output = '<div class="alert alert-info">Retrieving student entries...</div>';
     $('.serverResp').html(output);
 }
+
+/**
+ * @name - sendStudent
+ * @description - sends a new object to add to the database containing student information.
+ * On success, updates the DOM; otherwise, displays appropriate error message.
+ * */
 function sendStudent(obj){
     var dataObject={
         'name': studentArray[studentArray.length-1]['name'],
@@ -367,6 +399,11 @@ function sendStudent(obj){
     var output = "<div class='alert alert-info'> Adding"+dataObject.name+" to your records...</div>";
     $('.serverResp').html(output);
 }
+
+/**
+ * @name - removeStudent
+ * @description - Ajax call to remove the record from the database and update the DOM to reflect any changes.
+ * */
 function removeStudent(obj){
     var myData ={
         'id': obj.id
@@ -395,6 +432,12 @@ function removeStudent(obj){
     var output = "<div class='alert alert-info'> Deleting "+obj.deletedName+" from your records...</div>";
     $('.serverResp').html(output);
 }
+
+/**
+ * @name - updateStudent
+ * @description - Clear the error fields, locate the index value for the record that was clicked on the table
+ * and then use that index to find the object's position within the global student array to populate the modal accordingly.
+ * */
 function updateStudent() {
     $('.sError, .gError, .cError').html("");
     $('#studentName, #course, #studentGrade').val("");
@@ -404,12 +447,21 @@ function updateStudent() {
     //modalDisplay(studentID);
     modalDisplay(studentUpdate);
 }
+/**
+ * @name - modalDisplay
+ * @description - Populates the update modal with the previous values for the record.
+ * */
 function modalDisplay(s){
     $('#upName').val(s.name);
     $('#upGrade').val(s.grade);
     $('#upCourse').val(s.course_name);
     $('#myModal').modal($('#uID').val(s.id));
 }
+/**
+ * @name - updateStudentInfo
+ * @description - Takes the updated data and packages it as an object before sending it to the appropriate Ajax call.
+ * Afterwards, clear the form and close the modal before returning to the page.
+ * */
 function updateStudentInfo() {
     var uName = $('#upName').val();
     var uGrade = $('#upGrade').val();
@@ -429,6 +481,11 @@ function updateStudentInfo() {
     $('#updateForm input').val('');
     $("#myModal").modal('hide');
 };
+/**
+ * @name - updateStudentDom
+ * @description - send student object to database with updated information for a particular record.
+ * @returns on success, updates the DOM with new information ; otherwise, displays detailed error message.
+ * */
 function updateStudentDom(d){
     var dataObject={
         'id': d['id'],
@@ -462,13 +519,22 @@ function updateStudentDom(d){
     $('.serverResp').html(output);
 };
 
+/**
+ * @name - submitWithKeys
+ * @description - When certain modals are open, allows it to be closed with esc or enter key
+ * */
 function submitWithKeys(){
         if((e.which === 13 || e.keyCode ===13) || (e.which ===27 || e.keyCode ===27)){
             $("#genModal").remove();
         }
 }
-//A filter?
-//take the value being typed into it and start doing ajax calls when you type
+
+/**
+ * @name - filterByName
+ * @description - creates a call to the database based on matching input values
+ * with a setTimeout to give the user a chance to type
+ * @returns database results if successful, otherwise appends error message
+ * */
 function filterByName(){
     setTimeout(function() {
         reset();
