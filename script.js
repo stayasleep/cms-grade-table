@@ -1,5 +1,6 @@
 /**
- * student_array - global array to hold student objects
+ * @name -student_array
+ * @description - global array to hold student objects
  * @type {Array}
  */
 var studentArray=[];
@@ -8,6 +9,10 @@ var studentArray=[];
  */
 $(document).ready(initializeSGT);
 
+/**
+ * @name - initializeSGT
+ * @description - initializes event handlers and functions for the modal
+ * */
 function initializeSGT(){
     $('.studentAdd').click(addClicked);
     $('.cancel').click(cancelClicked);
@@ -41,6 +46,12 @@ function initializeSGT(){
     $('#filterName').on('keyup',filterByName);
     reset();
 }
+/**
+ * @name - validation
+ * @description - Regex validation for the name input field.  Checks for blank spaces and whether or not the name is between
+ * 3-30 characters.
+ * @param paramClass
+ * */
 function validation(paramClass){
     var nameVal = $('#studentName').val() || $('#upName').val();
     //check whitespace
@@ -63,6 +74,12 @@ function validation(paramClass){
         }
     }
 }
+/**
+ * @name - validation2
+ * @description - Regex validation for the course input value.  Checks for blank spaces and the course value must be
+ * between 2 - 40 characters
+ * @param paramClass
+ * */
 function validation2(paramClass){
     var courseVal = $('#course').val() || $('#upCourse').val();
     if(courseVal  && /(^\s+)([^a-zA-Z]+)/g.test(courseVal)){
@@ -85,6 +102,10 @@ function validation2(paramClass){
     }
 }
 /**
+ * @name - validation3
+ * @description - Regex validation for the input grade value.  Alerts the user whether or not the number is between 1-100 and
+ * is a whole number.
+ * @param paramClass
  * */
 function validation3(paramClass){
     var gradeVal = $('#studentGrade').val() || $('#upGrade').val();
@@ -197,6 +218,7 @@ function cancelClicked(){
 /**
  * @name - addStudent
  * @description - creates a student objects based on input fields in the form and adds the object to global student array.
+ * @params - name, grades, courses
  * @return undefined
  */
 function addStudent(name,grades,courses){
@@ -211,13 +233,15 @@ function addStudent(name,grades,courses){
     return undefined;
 };
 /**
- * clearAddStudentForm - clears out the form values based on inputIds variable
+ * @name - clearAddStudentForm
+ * @description - clears out the form values based on inputIds variable.
  */
 function clearAddStudentForm(){
     $('#studentName').val("");
     $('#studentGrade').val("");
     $('#course').val("");
 }
+
 /**
  * @name - calculateAverage
  * @description - loop through the global student array and calculate average grade and return that value.
