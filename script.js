@@ -226,7 +226,7 @@ function addStudent(name,grades,courses){
     studentArray.push(newObject);
     sendStudent(newObject);
     updateData();
-    return undefined;
+    // return undefined;
 }
 /**
  * @name - clearAddStudentForm
@@ -365,12 +365,6 @@ function dataResponse() {
                     addStudentToDom(entry);
                     updateData();
                 });
-
-                // for (var i = 0; i < response['data'].length; i++) {
-                //     studentArray.push(response['data'][i]);
-                //     addStudentToDom(response['data'][i]);
-                //     updateData();
-                // }
             }else{
                 $('.serverResp').html("");
                 $('#filterName').attr("disabled","disabled");
