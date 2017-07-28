@@ -40,7 +40,7 @@ function initializeSGT(){
     $('input').focus(function(){
         $('.serverResp').html("");
     });
-    $('#myModal').on('hidden.bs.modal',function(){
+    $('#updateModal').on('hidden.bs.modal',function(){
         $('.uSubmitError, .uGError, .uCError, .uNError').html("");
     });
     $('#filterName').on('keyup',filterByName);
@@ -126,23 +126,19 @@ function validation3(paramClass){
  * if there are no error divs present in the body.
  */
 function addClicked(){
-    var name=$('#studentName').val();
-    var grades = $('#studentGrade').val();
-    var courses = $('#course').val();
+    let name=$('#studentName').val();
+    let grades = $('#studentGrade').val();
+    let courses = $('#course').val();
     if(name==="" || grades==="" || courses===""){
-        // $('#genModal').show("hide");
-        //$("#genModal").remove();
         generalModal("Please fill in all the required fields","Close","");
         $('#genModal').modal({keyboard:true});
         return false;
     }else {
         if($('.sError').html()==="" && $('.cError').html()==="" && $('.gError').html()===""){
-            //$('#genModal').remove();
             addStudent(name,grades,courses);
             updateStudentList();
             clearAddStudentForm();
         }else{
-            //$('#genModal').remove();
             generalModal("Please Fill In The Fields In The Proper Format","Close","");
             $('#genModal').modal({keyboard:true});
             return false;
@@ -156,18 +152,18 @@ function addClicked(){
  * @params - str, str2, str3
  * */
 function generalModal(str,str2,str3){
-    var innerDiv = $('<div>',{
+    let innerDiv = $('<div>',{
         class:"modal-body"
     });
-    var innerP=$('<p>',{
+    let innerP=$('<p>',{
         class:"modal-str",
         text: str
     });
     innerDiv.append(innerP);
-    var innerDiv2=$('<div>',{
+    let innerDiv2=$('<div>',{
         class:"modal-footer"
     });
-    var innerBtnX=$('<button>',{
+    let innerBtnX=$('<button>',{
         type:"button",
         class:"btn btn-danger closer",
         "data-dismiss":"modal",
@@ -184,15 +180,15 @@ function generalModal(str,str2,str3){
     }else {
         innerDiv2.append(innerBtnX);
     }
-    var midDiv = $('<div>',{
+    let midDiv = $('<div>',{
         class:"modal-content modC"
     });
     midDiv.append(innerDiv,innerDiv2);
-    var outterDiv2=$('<div>',{
+    let outterDiv2=$('<div>',{
         class:"modal-dialog"
     });
     outterDiv2.append(midDiv);
-    var outterDiv=$('<div>',{
+    let outterDiv=$('<div>',{
         class:"modal fade ",
         id:"genModal",
         role:"dialog",
@@ -222,7 +218,7 @@ function cancelClicked(){
  * @return undefined
  */
 function addStudent(name,grades,courses){
-    var newObject = {
+    let newObject = {
         name: name,
         grade: grades,
         course: courses,
@@ -231,7 +227,7 @@ function addStudent(name,grades,courses){
     sendStudent(newObject);
     updateData();
     return undefined;
-};
+}
 /**
  * @name - clearAddStudentForm
  * @description - clears out the form values based on inputIds variable.
@@ -248,7 +244,7 @@ function clearAddStudentForm(){
  * @returns {number}
  */
 function calculateAverage(){
-    var numbers = 0;
+    let numbers = 0;
     if(!studentArray.length){
         return 0+"%";
     }
@@ -274,7 +270,7 @@ function calculateAverage(){
  * @description - centralized function to update the average and call student list update // call calculateAverage.
  */
 function updateData(){
-    var result = calculateAverage();
+    let result = calculateAverage();
     $('.avgGrade').html(result);
 }
 /**
@@ -282,7 +278,7 @@ function updateData(){
  * @description - loops through global student array and appends each objects data into the student-list-container > list-body.
  */
 function updateStudentList(){
-    var obj = studentArray[studentArray.length-1];
+    let obj = studentArray[studentArray.length-1];
     addStudentToDom(obj);
 }
 /**
@@ -292,20 +288,20 @@ function updateStudentList(){
  * @param studentObj
  */
 function addStudentToDom(studentObj){
-    var newTableRow = $('<tr>');
-    var tempStudentName = studentObj.name;
-    var tempStudentCourse= studentObj.course_name || studentObj.course;
-    var tempStudentGrade= studentObj.grade;
-    var newCol1 = $('<td>').text(tempStudentName);
-    var newCol2 = $('<td>').text(tempStudentCourse);
-    var newCol3 = $('<td>').text(tempStudentGrade);
-    var action = $('<td>');
-    var delBtn = $('<button>',{
+    let newTableRow = $('<tr>');
+    let tempStudentName = studentObj.name;
+    let tempStudentCourse= studentObj.course_name || studentObj.course;
+    let tempStudentGrade= studentObj.grade;
+    let newCol1 = $('<td>').text(tempStudentName);
+    let newCol2 = $('<td>').text(tempStudentCourse);
+    let newCol3 = $('<td>').text(tempStudentGrade);
+    let action = $('<td>');
+    let delBtn = $('<button>',{
         class: "btn btn-danger btnOps",
         type: "button",
         html:"<span>Delete</span>"
     }).click(deleteClicked);
-    var editBtn = $('<button>',{
+    let editBtn = $('<button>',{
         class:"btn btn-info btnOps",
         type: "button",
         html:"<span>Update</span>"
@@ -321,11 +317,11 @@ function addStudentToDom(studentObj){
  * */
 function deleteClicked(){
     $('#genModal').remove();
-    var studentIndex = $(this).parent().parent().index();
-    var studentID = studentArray[studentIndex]["id"];
-    var deletedName = studentArray[studentIndex]["name"];
-    var deletedStudent={"id":studentID,"deletedName":deletedName};
-    var delRow = $(this);
+    let studentIndex = $(this).parent().parent().index();
+    let studentID = studentArray[studentIndex]["id"];
+    let deletedName = studentArray[studentIndex]["name"];
+    let deletedStudent={"id":studentID,"deletedName":deletedName};
+    let delRow = $(this);
     generalModal("Please confirm entry before deleting","Cancel","Confirm");
     $('#genModal').modal();
     $('.confirmOp').click(function(){
@@ -364,11 +360,17 @@ function dataResponse() {
             if(response.success) {
                 $('.serverResp').html("");
                 $('#filterName').removeAttr("disabled");
-                for (var i = 0; i < response['data'].length; i++) {
-                    studentArray.push(response['data'][i]);
-                    addStudentToDom(response['data'][i]);
+                response.data.forEach(function(entry){
+                    studentArray.push(entry);
+                    addStudentToDom(entry);
                     updateData();
-                }
+                });
+
+                // for (var i = 0; i < response['data'].length; i++) {
+                //     studentArray.push(response['data'][i]);
+                //     addStudentToDom(response['data'][i]);
+                //     updateData();
+                // }
             }else{
                 $('.serverResp').html("");
                 $('#filterName').attr("disabled","disabled");
@@ -382,7 +384,7 @@ function dataResponse() {
             $('#genModal').modal({keyboard:true});
         }
     });
-    var output = '<div class="alert alert-info">Retrieving student entries...</div>';
+    let output = '<div class="alert alert-info">Retrieving student entries...</div>';
     $('.serverResp').html(output);
 }
 
@@ -392,7 +394,7 @@ function dataResponse() {
  * On success, updates the DOM; otherwise, displays appropriate error message.
  * */
 function sendStudent(obj){
-    var dataObject={
+    let dataObject={
         'name': studentArray[studentArray.length-1]['name'],
         'course_name': studentArray[studentArray.length-1]['course'],
         'grade': studentArray[studentArray.length-1]['grade'],
@@ -420,7 +422,7 @@ function sendStudent(obj){
             $('#genModal').modal({keyboard:true});
         }
     });
-    var output = "<div class='alert alert-info'> Adding"+dataObject.name+" to your records...</div>";
+    let output = "<div class='alert alert-info'> Adding"+dataObject.name+" to your records...</div>";
     $('.serverResp').html(output);
 }
 
@@ -429,7 +431,7 @@ function sendStudent(obj){
  * @description - Ajax call to remove the record from the database and update the DOM to reflect any changes.
  * */
 function removeStudent(obj){
-    var myData ={
+    let myData ={
         'id': obj.id
     };
     $.ajax({
@@ -453,7 +455,7 @@ function removeStudent(obj){
             $('#genModal').modal({keyboard:true});
         }
     });
-    var output = "<div class='alert alert-info'> Deleting "+obj.deletedName+" from your records...</div>";
+    let output = "<div class='alert alert-info'> Deleting "+obj.deletedName+" from your records...</div>";
     $('.serverResp').html(output);
 }
 
@@ -465,9 +467,9 @@ function removeStudent(obj){
 function updateStudent() {
     $('.sError, .gError, .cError').html("");
     $('#studentName, #course, #studentGrade').val("");
-    var studentIndex = $(this).parent().parent().index();
+    let studentIndex = $(this).parent().parent().index();
     //var studentID = studentArray[studentIndex]["id"];
-    var studentUpdate = studentArray[studentIndex];
+    let studentUpdate = studentArray[studentIndex];
     //modalDisplay(studentID);
     modalDisplay(studentUpdate);
 }
@@ -479,7 +481,7 @@ function modalDisplay(s){
     $('#upName').val(s.name);
     $('#upGrade').val(s.grade);
     $('#upCourse').val(s.course_name);
-    $('#myModal').modal($('#uID').val(s.id));
+    $('#updatedModal').modal($('#uID').val(s.id));
 }
 /**
  * @name - updateStudentInfo
@@ -487,15 +489,15 @@ function modalDisplay(s){
  * Afterwards, clear the form and close the modal before returning to the page.
  * */
 function updateStudentInfo() {
-    var uName = $('#upName').val();
-    var uGrade = $('#upGrade').val();
-    var uCourse = $('#upCourse').val();
+    let uName = $('#upName').val();
+    let uGrade = $('#upGrade').val();
+    let uCourse = $('#upCourse').val();
     if(uName === "" || uGrade === "" || uCourse === ""){
         var output = "<div class='alert alert-danger'>Please Fill In All The Required Fields.</div>";
         $('.uSubmitError').html(output);
         return false;
     }
-    var updateObject = {
+    let updateObject = {
         id: $('#uID').val(),
         student: uName,
         score: uGrade,
@@ -503,15 +505,15 @@ function updateStudentInfo() {
     };
     updateStudentDom(updateObject);
     $('#updateForm input').val('');
-    $("#myModal").modal('hide');
-};
+    $("#updatedModal").modal('hide');
+}
 /**
  * @name - updateStudentDom
  * @description - send student object to database with updated information for a particular record.
  * @returns on success, updates the DOM with new information ; otherwise, displays detailed error message.
  * */
 function updateStudentDom(d){
-    var dataObject={
+    let dataObject={
         'id': d['id'],
         'student': d['student'],
         'course': d['course'],
@@ -539,9 +541,9 @@ function updateStudentDom(d){
             $('#genModal').modal({keyboard:true});
         }
     });
-    var output = "<div class='alert alert-info'> Updating your record...</div>";
+    let output = "<div class='alert alert-info'> Updating your record...</div>";
     $('.serverResp').html(output);
-};
+}
 
 /**
  * @name - submitWithKeys
@@ -562,17 +564,16 @@ function submitWithKeys(){
 function filterByName(){
     setTimeout(function() {
         reset();
-        var filteredName = $('#filterName').val();
+        let filteredName = $('#filterName').val();
         $.ajax({
             data: {"name": filteredName},
             dataType: "json",
             url: 'data.php?action=filter',
             method: "POST",
             success: function (response) {
-                // console.log('this is my response', response);
                 if (response.success) {
                     $('.serverResp').html("");
-                    for (var j = 0; j < response.data.length; j++) {
+                    for (let j = 0; j < response.data.length; j++) {
                         studentArray.push(response.data[j]);
                         addStudentToDom(response.data[j]);
                         updateData();
@@ -582,7 +583,7 @@ function filterByName(){
                     dataResponse();
                 } else {
                     $('.serverResp').html("");
-                    var filterBy = $('#filterName').val();
+                    let filterBy = $('#filterName').val();
                     filterBy = filterBy.replace(/<|>/ig, function (m) {
                         return '&' + (m == '>' ? 'g' : 'l') + 't;';
                     });
@@ -596,7 +597,7 @@ function filterByName(){
                 $('#genModal').modal({keyboard: true});
             }
         });
-        var output = "<div class='alert alert-info'> Filtering...</div>";
+        let output = "<div class='alert alert-info'> Filtering...</div>";
         $('.serverResp').html(output);
     },1000);
 }

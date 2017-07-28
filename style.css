@@ -30,6 +30,9 @@ tbody > tr{
     word-break: break-all;
     font-size: 1em;
 }
+tbody>tr:hover{
+    background: rgba(121,121,121,.4);
+}
 .loadIt{
     background-color: darkslategray;
     opacity: .7;
