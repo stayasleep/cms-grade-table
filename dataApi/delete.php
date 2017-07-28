@@ -21,20 +21,44 @@ if(empty($id)) {
     //write a query that deletes the student by the given student ID
     $id=mysqli_real_escape_string($conn,$id);
 
-    $query = "DELETE FROM  `student_data` WHERE `id`='$id'";
-    $result = mysqli_query($conn, $query);
-    //send the query to the database, store the result of the query into $result
-    //check if $result is empty.
-    if (empty($result)) {
-        //if it is, add 'database error' to errors
-        $output['errors'][] = 'database error';
-    } else {
-        if (mysqli_affected_rows($conn) === 1) {
-            $output['success'] = true;
-        } else {
-            $output['errors'][] = 'delete error';
+    //query template
+    $query="DELETE FROM `student_data` WHERE `id`= ?";
+    //prepare statement
+    if($stmt = $conn->prepare($query)){
+        //bind vars for placeholder
+        $stmt->bind_param("s",$id);
+        //execute statement
+        $stmt->execute();
+        //check to see if result is empty
+        if(empty($stmt->affected_rows)){
+            $output['errors'][]='database error';
+        }else{
+            if($stmt->affected_rows===1){
+                $output['success']=true;
+            }else{
+                $output['errors'][]='delete error';
+            }
         }
     }
+    //close staement
+    $stmt->close();
+
+//    $query = "DELETE FROM  `student_data` WHERE `id`='$id'";
+//    $result = mysqli_query($conn, $query);
+//    //send the query to the database, store the result of the query into $result
+//    //check if $result is empty.
+//    if (empty($result)) {
+//        //if it is, add 'database error' to errors
+//        $output['errors'][] = 'database error';
+//    } else {
+//        if (mysqli_affected_rows($conn) === 1) {
+//            $output['success'] = true;
+//        } else {
+//            $output['errors'][] = 'delete error';
+//        }
+//    }
 }
-mysqli_close($conn);
+//close connection
+$conn->close();
+//mysqli_close($conn);
 ?>

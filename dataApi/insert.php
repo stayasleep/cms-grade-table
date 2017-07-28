@@ -34,26 +34,57 @@ $course_name =  filter_var($course_name, FILTER_SANITIZE_STRING, FILTER_FLAG_STR
 $name = mysqli_real_escape_string($conn, $name);
 $grade = mysqli_real_escape_string($conn, $grade);
 $course_name = mysqli_real_escape_string($conn, $course_name);
-
+//
+//if(count($output['errors'])===0){
+//    //write a query that inserts the data into the database.  remember that ID doesn't need to be set as it is auto incrementing
+//    $query = "INSERT INTO `student_data`(`id`, `name`, `grade`, `course_name`) VALUES (null,'$name','$grade','$course_name')";
+////send the query to the database, store the result of the query into $result
+//    $result=mysqli_query($conn,$query);
+////check if $result is empty.
+//    if(empty($result)) {
+//        //if it is, add 'database error' to errors
+//        $output['errors'][] = 'database error';
+//    }else{
+//        if(mysqli_affected_rows($conn) === 1){
+//            $output['success']=true;
+//            $insertID=mysqli_insert_id($conn);
+//            $output['insertID']=$insertID;
+//        }else{
+//            $output['errors'][]='insert error';
+//        }
+//    }
+//}
+//
+//mysqli_close($conn);
 if(count($output['errors'])===0){
-    //write a query that inserts the data into the database.  remember that ID doesn't need to be set as it is auto incrementing
-    $query = "INSERT INTO `student_data`(`id`, `name`, `grade`, `course_name`) VALUES (null,'$name','$grade','$course_name')";
-//send the query to the database, store the result of the query into $result
-    $result=mysqli_query($conn,$query);
-//check if $result is empty.
-    if(empty($result)) {
-        //if it is, add 'database error' to errors
-        $output['errors'][] = 'database error';
-    }else{
-        if(mysqli_affected_rows($conn) === 1){
-            $output['success']=true;
-            $insertID=mysqli_insert_id($conn);
-            $output['insertID']=$insertID;
-        }else{
-            $output['errors'][]='insert error';
-        }
-    }
-}
 
-mysqli_close($conn);
+    $query="INSERT INTO `student_data` (`name`,`grade`,`course_name`) VALUES (?,?,?) ";
+    //prepare statement
+    if($stmt = $conn-> prepare($query)){
+        //bind variables for placeholder
+        $stmt->bind_param("sss",$name,$grade,$course_name);
+        //execute statement
+        $stmt->execute();
+
+        //check results of action
+        if(empty($stmt->affected_rows)){
+            $output['errors'][]='database error';
+        }else{
+            if($stmt->affected_rows===1){
+                $output['success']=true;
+                $insertID = $stmt->insert_id;
+//                printf('yo the id was %d\n',$stmt->insert_id);
+                $output['insertID']=$insertID;
+            }else{
+                $output['errors'][]='insert error';
+            }
+        }
+        //close statement
+        $stmt->close();
+
+    }
+
+}
+//close conenction
+$conn->close();
 ?>
