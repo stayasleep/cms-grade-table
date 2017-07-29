@@ -462,9 +462,7 @@ function updateStudent() {
     $('.sError, .gError, .cError').html("");
     $('#studentName, #course, #studentGrade').val("");
     let studentIndex = $(this).parent().parent().index();
-    //var studentID = studentArray[studentIndex]["id"];
     let studentUpdate = studentArray[studentIndex];
-    //modalDisplay(studentID);
     modalDisplay(studentUpdate);
 }
 /**
@@ -566,7 +564,6 @@ function filterByName(){
             method: "POST",
             success: function (response) {
                 reset();
-                console.log('filtered resp',response);
                 if (response.success) {
                     $('.serverResp').html("");
                     for (let j = 0; j < response.data.length; j++) {
