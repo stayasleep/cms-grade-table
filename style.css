@@ -33,15 +33,13 @@ tbody > tr{
 tbody>tr:hover{
     background: rgba(121,121,121,.4);
 }
-.loadIt{
-    background-color: darkslategray;
-    opacity: .7;
+.btn.btn-danger.btnOps{
+    background-color: rgba(0,0,0,.5);
     color:white;
+    border-color: black;
 }
-.loadIt:hover,.loadIt:active,.loadIt:focus{
-    background-color: darkslategray;
-    opacity: 1;
-    color: white;
+.btn.btn-danger.btnOps:hover,.btn.btn-danger.btnOps:active,.btn.btn-danger.btnOps:focus{
+    background-color: rgb(0,0,0);
 }
 button>span{
     display: flex;
