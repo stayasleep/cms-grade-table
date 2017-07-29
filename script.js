@@ -557,7 +557,7 @@ function submitWithKeys(){
  * */
 function filterByName(){
     setTimeout(function() {
-        reset();
+        // reset();
         let filteredName = $('#filterName').val();
         $.ajax({
             data: {"name": filteredName},
@@ -565,6 +565,8 @@ function filterByName(){
             url: 'data.php?action=filter',
             method: "POST",
             success: function (response) {
+                reset();
+                console.log('filtered resp',response);
                 if (response.success) {
                     $('.serverResp').html("");
                     for (let j = 0; j < response.data.length; j++) {

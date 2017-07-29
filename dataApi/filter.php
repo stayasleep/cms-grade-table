@@ -20,24 +20,42 @@ $name = addslashes($name);
 $name = mysqli_real_escape_string($conn, $name);
 
 
-//proceed if no erro
-if(count($output['errors'])===0){
-    $query = "SELECT * FROM `student_data` WHERE `name` LIKE '%".$name."%'";
-    $result = mysqli_query($conn,$query);
+//proceed if no error
+if(count($output['errors'])===0) {
+    //query template
+    $query = "SELECT `id`,`name`,`grade`,`course_name` FROM `student_data` WHERE `name` LIKE ? ";
+    //prepare statement
+    if ($stmt = $conn->prepare($query)) {
 
-    //if there is no match
-    if(empty($result)){
-        $output['errors'][]='database error';
-    }else{
-        if(mysqli_num_rows($result)>0){
-            $output['success']=true;
-            while ($row = mysqli_fetch_assoc($result)){
-                $output['data'][]=$row;
-            }
-        }else{
-            $output['errors']=['no data'];
+        $name = "%" . $name . "%";
+        $stmt->bind_param("s", $name);
+        //execute statement
+        if (!$stmt->execute()) {
+            $output['errors'][] = 'prepared stmt fail';
         }
+
+        if (!$stmt->bind_result($resultID, $resultName, $resultGrade, $resultCourse)) {
+            $output['errors'][] = "Binding output params failed(" . $stmt->errno . ")" . $stmt->error;
+        }
+
+        //check results of action
+        if (empty($stmt->affected_rows)) {
+            $output['errors'][] = 'database error';
+        } else {
+            $output['data'] = [];
+            while ($stmt->fetch()) {
+                $row = array("name" => $resultName, "id" => $resultID, "course_name" => $resultCourse, "grade" => $resultGrade);
+                $output['data'][] = $row;
+            }
+            if (count($output['data']) === 0) {
+                $output['errors'] = ['no data'];
+            } else {
+                $output['success'] = true;
+            }
+        }
+        $stmt->close();
     }
 }
-mysqli_close($conn);
+//close connection
+$conn->close();
 ?>

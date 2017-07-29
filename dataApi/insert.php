@@ -81,10 +81,9 @@ if(count($output['errors'])===0){
         }
         //close statement
         $stmt->close();
-
     }
 
 }
-//close conenction
+//close connection
 $conn->close();
 ?>

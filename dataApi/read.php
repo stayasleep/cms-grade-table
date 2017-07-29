@@ -16,7 +16,6 @@ if(empty($result)){
     $output['error'][]='database error';
 }else{
     //check if any data came back
-    //$output['data']=[];
     //if it did, change output success to true
     //do a while loop to collect all the data
     if(mysqli_num_rows($result)>0){
