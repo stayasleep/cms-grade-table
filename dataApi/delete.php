@@ -40,23 +40,8 @@ if(empty($id)) {
             }
         }
     }
-    //close staement
+    //close
     $stmt->close();
-
-//    $query = "DELETE FROM  `student_data` WHERE `id`='$id'";
-//    $result = mysqli_query($conn, $query);
-//    //send the query to the database, store the result of the query into $result
-//    //check if $result is empty.
-//    if (empty($result)) {
-//        //if it is, add 'database error' to errors
-//        $output['errors'][] = 'database error';
-//    } else {
-//        if (mysqli_affected_rows($conn) === 1) {
-//            $output['success'] = true;
-//        } else {
-//            $output['errors'][] = 'delete error';
-//        }
-//    }
 }
 //close connection
 $conn->close();
