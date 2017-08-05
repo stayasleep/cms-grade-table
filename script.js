@@ -214,7 +214,6 @@ function cancelClicked(){
  * @name - addStudent
  * @description - creates a student objects based on input fields in the form and adds the object to global student array.
  * @params - name, grades, courses
- * @return undefined
  */
 function addStudent(name,grades,courses){
     let newObject = {
@@ -243,14 +242,15 @@ function clearAddStudentForm(){
  * @returns {number}
  */
 function calculateAverage(){
-    let numbers = 0;
-    if(!studentArray.length){
-        return 0+"%";
+    let gradeArray = studentArray.slice();
+    if(!gradeArray.length){
+        return "0 %";
     }
-    for (var i=0;i<=studentArray.length-1;i++){
-        numbers += parseFloat(studentArray[i].grade);
-    }
-    var number = (numbers/studentArray.length).toFixed(2);
+    let gradeReduce = gradeArray.reduce((sum,num)=>{
+        return sum + parseFloat(num["grade"]);
+    },0);
+    let number = (gradeReduce/gradeArray.length).toFixed(2);
+
     if(number>=90.00){
         $(".avgGrade").css("background-color","green");
     }else if (number>=80.00){
@@ -377,13 +377,13 @@ function dataResponse() {
 /**
  * @name - sendStudent
  * @description - sends a new object to add to the database containing student information.
- * On success, updates the DOM; otherwise, displays appropriate error message.
+ * @param {Object} sObj - student object from Add Function
  * */
-function sendStudent(obj){
+function sendStudent(sObj){
     let dataObject={
-        'name': studentArray[studentArray.length-1]['name'],
-        'course_name': studentArray[studentArray.length-1]['course'],
-        'grade': studentArray[studentArray.length-1]['grade'],
+        'name': sObj['name'],
+        'course_name': sObj['course'],
+        'grade': sObj['grade'],
     };
     $.ajax({
         data:dataObject,
@@ -496,12 +496,12 @@ function updateStudentInfo() {
  * @description - send student object to database with updated information for a particular record.
  * @returns on success, updates the DOM with new information ; otherwise, displays detailed error message.
  * */
-function updateStudentDom(d){
+function updateStudentDom(uObj){
     let dataObject={
-        'id': d['id'],
-        'student': d['student'],
-        'course': d['course'],
-        'score': d['score'],
+        'id': uObj['id'],
+        'student': uObj['student'],
+        'course': uObj['course'],
+        'score': uObj['score'],
     };
     $.ajax({
         data:dataObject,
