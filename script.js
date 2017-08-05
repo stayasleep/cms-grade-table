@@ -122,7 +122,7 @@ function validation3(paramClass){
 }
 /**
  * @name - addClicked
- * @description - Event Handler when user clicks the add button. It will call @addStudent and @updateStudentList and also @clearAddStudentForm
+ * @description - Event Handler when user clicks the add button. It will call @addStudent  and  @clearAddStudentForm
  * if there are no error divs present in the body.
  */
 function addClicked(){
@@ -136,7 +136,6 @@ function addClicked(){
     }else {
         if($('.sError').html()==="" && $('.cError').html()==="" && $('.gError').html()===""){
             addStudent(name,grades,courses);
-            updateStudentList();
             clearAddStudentForm();
         }else{
             generalModal("Please Fill In The Fields In The Proper Format","Close","");
@@ -273,14 +272,7 @@ function updateData(){
     let result = calculateAverage();
     $('.avgGrade').html(result);
 }
-/**
- * @name - updateStudentList
- * @description - loops through global student array and appends each objects data into the student-list-container > list-body.
- */
-function updateStudentList(){
-    let obj = studentArray[studentArray.length-1];
-    addStudentToDom(obj);
-}
+
 /**
  * @name - addStudentToDom
  * @description - take in a student object, create html elements from the values and then append the elements.
