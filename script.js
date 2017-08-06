@@ -237,40 +237,33 @@ function clearAddStudentForm(){
 }
 
 /**
- * @name - calculateAverage
- * @description - loop through the global student array and calculate average grade and return that value.
- * @returns {number}
- */
-function calculateAverage(){
-    let gradeArray = studentArray.slice();
-    if(!gradeArray.length){
-        return "0 %";
-    }
-    let gradeReduce = gradeArray.reduce((sum,num)=>{
-        return sum + parseFloat(num["grade"]);
-    },0);
-    let number = (gradeReduce/gradeArray.length).toFixed(2);
-
-    if(number>=90.00){
-        $(".avgGrade").css("background-color","green");
-    }else if (number>=80.00){
-        $(".avgGrade").css("background-color","mediumseagreen");
-    }else if(number>=70.00){
-        $(".avgGrade").css("background-color","orange");
-    }else if(number>=60.00){
-        $(".avgGrade").css("background-color","lightcoral");
-    }else{
-        $(".avgGrade").css("background-color","red");
-    }
-    return number+'%';
-}
-/**
  * @name - updateData
- * @description - centralized function to update the average and call student list update // call calculateAverage.
+ * @description - loops through the student array to calculate the grade average with css styling based on results
  */
 function updateData(){
-    let result = calculateAverage();
-    $('.avgGrade').html(result);
+    let number=0;
+    let gradeArray = studentArray.slice();
+    if(!gradeArray.length){
+        $(".avgGrade").css("background-color", "red");
+    }else {
+        let gradeReduce = gradeArray.reduce((sum, num) => {
+            return sum + parseFloat(num["grade"]);
+        }, 0);
+        number = (gradeReduce / gradeArray.length).toFixed(2);
+
+        if (number >= 90.00) {
+            $(".avgGrade").css("background-color", "green");
+        } else if (number >= 80.00) {
+            $(".avgGrade").css("background-color", "mediumseagreen");
+        } else if (number >= 70.00) {
+            $(".avgGrade").css("background-color", "orange");
+        } else if (number >= 60.00) {
+            $(".avgGrade").css("background-color", "lightcoral");
+        } else {
+            $(".avgGrade").css("background-color", "red");
+        }
+    }
+    $('.avgGrade').html(number.toString()+"%");
 }
 
 /**
