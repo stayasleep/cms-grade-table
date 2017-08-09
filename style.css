@@ -58,9 +58,7 @@ button>span{
 
 /*media query*/
 @media screen and (min-width: 767px){
-    .optionX{
-        margin-right: 1em;
-    }
+   
     .btn{
         width: 5em;
     }
