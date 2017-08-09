@@ -53,7 +53,7 @@ function initializeSGT(){
  * @param paramClass
  * */
 function validation(paramClass){
-    var nameVal = $('#studentName').val() || $('#upName').val();
+    let nameVal = $('#studentName').val() || $('#upName').val();
     //check whitespace
     if(nameVal && /(^\s+)([^a-zA-Z]+)/g.test(nameVal)){
         var output='<div class="alert alert-danger"><i class="fa fa-lg  fa-times-circle"></i> Please remove any blank spaces before entering a name.</div>';
@@ -81,19 +81,19 @@ function validation(paramClass){
  * @param paramClass
  * */
 function validation2(paramClass){
-    var courseVal = $('#course').val() || $('#upCourse').val();
+    let courseVal = $('#course').val() || $('#upCourse').val();
     if(courseVal  && /(^\s+)([^a-zA-Z]+)/g.test(courseVal)){
-        var output = '<div class="alert alert-danger">Please Enter a Course Name</div>';
+        let output = '<div class="alert alert-danger">Please Enter a Course Name</div>';
         $(paramClass).html(output);
     }else{
         if(courseVal && !/^([a-zA-Z0-9 :\-.'"]+){2,40}$/g.test(courseVal)){
             if(courseVal.length<=2) {
                 //too short class name
-                var output = '<div class="alert alert-danger">Course Name Must Be At Least 2 Characters</div>';
+                let output = '<div class="alert alert-danger">Course Name Must Be At Least 2 Characters</div>';
                 $(paramClass).html(output);
             }else{
                 //name is too long
-                var output = '<div class="alert alert-danger">Course Name Must Be Shorter Than 40 Characters</div>';
+                let output = '<div class="alert alert-danger">Course Name Must Be Shorter Than 40 Characters</div>';
                 $(paramClass).html(output);
             }
         }else{
@@ -108,13 +108,13 @@ function validation2(paramClass){
  * @param paramClass
  * */
 function validation3(paramClass){
-    var gradeVal = $('#studentGrade').val() || $('#upGrade').val();
+    let gradeVal = $('#studentGrade').val() || $('#upGrade').val();
     if(gradeVal && !/^0*(?:[1-9][0-9]?|100)$/g.test(gradeVal)){
-        var output = '<div class="alert alert-danger">Please Enter a Whole Number Between 1-100</div>';
+        let output = '<div class="alert alert-danger">Please Enter a Whole Number Between 1-100</div>';
         $(paramClass).html(output);
     }else{
         if(gradeVal <= 1){
-            var output = '<div class="alert a;ert-danger">Grade Must Be Greater Than 0</div>';
+            let output = '<div class="alert a;ert-danger">Grade Must Be Greater Than 0</div>';
             $(paramClass).html(output);
         }
         $(paramClass).html("");
@@ -169,7 +169,7 @@ function generalModal(str,str2,str3){
         html:"<span>"+str2+"</span>",
     });
     if(str3 !== ""){
-        var innerBtnX2 = $('<button>',{
+        let innerBtnX2 = $('<button>',{
             type:"button",
             class:"btn btn-success confirmOp",
             "data-dismiss":"modal",
@@ -421,7 +421,7 @@ function removeStudent(obj){
         success: function(response){
             $('.serverResp').html("");
             if (response.success===true){
-                var output = "<div class='alert alert-success'> Deleted "+obj.deletedName+" from your records.</div>";
+                let output = "<div class='alert alert-success'> Deleted "+obj.deletedName+" from your records.</div>";
                 $('.serverResp').html(output);
             }else{
                 generalModal("Unable to delete the  entry from your records; please try again.","Close","");
@@ -470,7 +470,7 @@ function updateStudentInfo() {
     let uGrade = $('#upGrade').val();
     let uCourse = $('#upCourse').val();
     if(uName === "" || uGrade === "" || uCourse === ""){
-        var output = "<div class='alert alert-danger'>Please Fill In All The Required Fields.</div>";
+        let output = "<div class='alert alert-danger'>Please Fill In All The Required Fields.</div>";
         $('.uSubmitError').html(output);
         return false;
     }
@@ -504,7 +504,7 @@ function updateStudentDom(uObj){
         success: function(response){
             $('.serverResp').html("");
             if (response.success){
-                var output = "<div class='alert alert-success'> Your record has successfully updated.</div>";
+                let output = "<div class='alert alert-success'> Your record has successfully updated.</div>";
                 $('.serverResp').html(output);
                 dataResponse();
             }else{
@@ -565,7 +565,7 @@ function filterByName(){
                     filterBy = filterBy.replace(/<|>/ig, function (m) {
                         return '&' + (m == '>' ? 'g' : 'l') + 't;';
                     });
-                    var output = "<div class='alert alert-danger'>We&apos;re sorry, there are 0 matches for " + filterBy + ". </div>";
+                    let output = "<div class='alert alert-danger'>We&apos;re sorry, there are 0 matches for " + filterBy + ". </div>";
                     $('.serverResp').html(output);
                 }
             },
