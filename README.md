@@ -1,5 +1,4 @@
 # SGT - Student Grade Table
-## View The App @ [brianbernste.in](https://dev.brianbernste.in/sgt/)
 
 ## Summary
 A user-friendly content management system with full CRUD functionality.  Easily create, read, \
