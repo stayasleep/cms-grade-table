@@ -221,10 +221,8 @@ function addStudent(name,grades,courses){
         grade: grades,
         course: courses,
     };
-    studentArray.push(newObject);
     sendStudent(newObject);
     updateData();
-    // return undefined;
 }
 /**
  * @name - clearAddStudentForm
@@ -389,7 +387,6 @@ function sendStudent(sObj){
                 var output = "<div class='alert alert-success'> Successfully Added "+dataObject.name+" to your records.</div>";
                 $('.serverResp').html(output);
                 dataResponse();
-                //studentArray[studentArray.length-1][id]=response['data'][id];
             }else{
                 generalModal("Unable to insert entry into your records; please fill out the form in the proper format and try again.","Close","");
                 $('#genModal').modal({keyboard:true});
